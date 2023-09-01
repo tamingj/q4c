@@ -21,18 +21,18 @@ public class JoinIterator<Left, Right, Key, Result> implements Iterator<Result> 
     private final List<Result> buffer = new LinkedList<>();
 
     public static <Element1, Element2, Key, Result> Iterable<Result> wrap(JoinMode joinMode,
-                                                                          Iterable<Element1> element1s, Function<Element1, Key> element1KeyFunc,
-                                                                          Iterable<Element2> element2s, Function<Element2, Key> element2KeyFunc,
+                                                                          Iterator<Element1> element1s, Function<Element1, Key> element1KeyFunc,
+                                                                          Iterator<Element2> element2s, Function<Element2, Key> element2KeyFunc,
                                                                           BiFunction<Element1, Element2, Result> mapFunction) {
         return () -> {
             Map<Key, List<Element2>> element2ByKeyMap = new HashMap<>();
-            for (Element2 element2 : element2s) {
+            for (Element2 element2 : (Iterable<Element2>)() -> element2s) {
                 Key key = element2KeyFunc.apply(element2);
                 List<Element2> element2sForKey = element2ByKeyMap.computeIfAbsent(key, (k) -> new ArrayList<>());
                 element2sForKey.add(element2);
             }
 
-            return new JoinIterator<>(joinMode, element1s.iterator(), element1KeyFunc, element2ByKeyMap,
+            return new JoinIterator<>(joinMode, element1s, element1KeyFunc, element2ByKeyMap,
                     mapFunction);
         };
     }
