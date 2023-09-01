@@ -3,11 +3,13 @@ package io.github.cbuschka.objset.impl;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-class JoinIterator<Left, Right, Key, Result> implements Iterator<Result> {
+public class JoinIterator<Left, Right, Key, Result> implements Iterator<Result> {
 
-    enum JoinMode {
-        LEFT_INNER,
+    public enum JoinMode {
+        INNER,
         LEFT_OUTER;
     }
 
@@ -18,10 +20,10 @@ class JoinIterator<Left, Right, Key, Result> implements Iterator<Result> {
     private final BiFunction<Left, Right, Result> mapFunction;
     private final List<Result> buffer = new LinkedList<>();
 
-    static <Element1, Element2, Key, Result> Iterable<Result> wrap(JoinMode joinMode,
-                                                                   Iterable<Element1> element1s, Function<Element1, Key> element1KeyFunc,
-                                                                   Iterable<Element2> element2s, Function<Element2, Key> element2KeyFunc,
-                                                                   BiFunction<Element1, Element2, Result> mapFunction) {
+    public static <Element1, Element2, Key, Result> Iterable<Result> wrap(JoinMode joinMode,
+                                                                          Iterable<Element1> element1s, Function<Element1, Key> element1KeyFunc,
+                                                                          Iterable<Element2> element2s, Function<Element2, Key> element2KeyFunc,
+                                                                          BiFunction<Element1, Element2, Result> mapFunction) {
         return () -> {
             Map<Key, List<Element2>> element2ByKeyMap = new HashMap<>();
             for (Element2 element2 : element2s) {
@@ -59,6 +61,11 @@ class JoinIterator<Left, Right, Key, Result> implements Iterator<Result> {
         return buffer.remove(0);
     }
 
+    public Stream<Result> stream() {
+        return StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(this, Spliterator.ORDERED),
+                false);
+    }
 
     private void fill() {
         while (buffer.isEmpty() && elementType1Iterator.hasNext()) {
@@ -66,7 +73,7 @@ class JoinIterator<Left, Right, Key, Result> implements Iterator<Result> {
             Key key = elementType1KeyFunction.apply(nextLeft);
             List<Right> rights = element2ByKeyMap.get(key);
             switch (joinMode) {
-                case LEFT_INNER -> fillLeftInner(nextLeft, rights);
+                case INNER -> fillLeftInner(nextLeft, rights);
                 case LEFT_OUTER -> fillLeftOuter(nextLeft, rights);
                 default -> throw new IllegalArgumentException("Invalid join type %s.".formatted(joinMode));
             }

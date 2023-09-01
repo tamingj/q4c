@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
 class TriStreamImpl<Element1, Element2, Element3> implements TriStream<Element1, Element2, Element3> {
     private final Iterable<Triple<Element1, Element2, Element3>> source;
 
-    TriStreamImpl(Iterable<Triple<Element1, Element2, Element3>> source) {
+    public TriStreamImpl(Iterable<Triple<Element1, Element2, Element3>> source) {
         this.source = source;
     }
 

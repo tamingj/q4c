@@ -8,10 +8,10 @@ import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-class BiStreamImpl<Element1, Element2> implements BiStream<Element1, Element2> {
+public class BiStreamImpl<Element1, Element2> implements BiStream<Element1, Element2> {
     private final Stream<Tuple<Element1, Element2>> source;
 
-    BiStreamImpl(Stream<Tuple<Element1, Element2>> source) {
+    public BiStreamImpl(Stream<Tuple<Element1, Element2>> source) {
         this.source = source;
     }
 

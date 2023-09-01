@@ -11,7 +11,7 @@ class UniSelectImpl<Element1> implements FilterableUniSelect<Element1> {
     private final ObjectSetImpl objectSet;
     private final Iterable<Element1> elements;
 
-    UniSelectImpl(ObjectSetImpl objectSet, Iterable<Element1> elements) {
+    public UniSelectImpl(ObjectSetImpl objectSet, Iterable<Element1> elements) {
         this.objectSet = objectSet;
         this.elements = elements;
     }
@@ -19,7 +19,7 @@ class UniSelectImpl<Element1> implements FilterableUniSelect<Element1> {
     @Override
     public <Element2, KeyType> FilterableBiSelect<Element1, Element2> join(Class<Element2> element2Type, Function<Element1, KeyType> element1KeyFunc, Function<Element2, KeyType> element2KeyFunc) {
         List<Element2> right = objectSet.getElementsFor(element2Type);
-        return new BiSelectImpl<>(objectSet, JoinIterator.wrap(JoinIterator.JoinMode.LEFT_INNER, elements, element1KeyFunc, right, element2KeyFunc, Tuple::of));
+        return new BiSelectImpl<>(objectSet, JoinIterator.wrap(JoinIterator.JoinMode.INNER, elements, element1KeyFunc, right, element2KeyFunc, Tuple::of));
     }
 
     @Override

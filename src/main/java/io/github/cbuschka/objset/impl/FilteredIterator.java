@@ -4,16 +4,16 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
-class FilteredIterator<E> implements Iterator<E> {
+public class FilteredIterator<E> implements Iterator<E> {
     private final Iterator<E> source;
     private final Function<E, Boolean> filter;
     private Object[] buf;
 
-    static <E> Iterable<E> filter(Iterable<E> source, Function<E, Boolean> filter) {
+    public static <E> Iterable<E> filter(Iterable<E> source, Function<E, Boolean> filter) {
         return () -> new FilteredIterator<>(source.iterator(), filter);
     }
 
-    private FilteredIterator(Iterator<E> source, Function<E, Boolean> filter) {
+    public FilteredIterator(Iterator<E> source, Function<E, Boolean> filter) {
         this.source = source;
         this.filter = filter;
     }
