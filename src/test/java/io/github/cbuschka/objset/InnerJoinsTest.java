@@ -93,10 +93,10 @@ class InnerJoinsTest {
     }
 
     private void whenInnerJoined() {
-        this.result = toList(Joins.innerJoin(left, s -> s.charAt(0), right, s -> s.charAt(0), Tuple::of));
+        this.result = toList(Joins.innerJoin(left, s -> s.charAt(0), right, s -> s.charAt(0), Pair::of));
     }
 
-    private List<String> toList(Iterable<Tuple<String, String>> tuples) {
+    private List<String> toList(Iterable<Pair<String, String>> tuples) {
         return StreamSupport.stream(tuples.spliterator(), false)
                 .map(t -> t.element1() + ":" + t.element2())
             .collect(Collectors.toList());

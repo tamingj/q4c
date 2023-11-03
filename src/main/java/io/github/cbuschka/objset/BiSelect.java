@@ -20,10 +20,10 @@ public interface BiSelect<Element1, Element2> {
         stream().forEach(consumer);
     }
 
-    default List<Tuple<Element1, Element2>> toList() {
+    default List<Pair<Element1, Element2>> toList() {
         return tupleStream().collect(Collectors.toList());
     }
 
-    Stream<Tuple<Element1, Element2>> tupleStream();
+    Stream<Pair<Element1, Element2>> tupleStream();
 }
 

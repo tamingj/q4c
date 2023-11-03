@@ -83,10 +83,10 @@ class LeftOuterJoinsTest {
     }
 
     private void whenLeftOuterJoined() {
-        this.result = toList(Joins.leftOuterJoin(left, s -> s.charAt(0), right, s -> s.charAt(0), Tuple::of));
+        this.result = toList(Joins.leftOuterJoin(left, s -> s.charAt(0), right, s -> s.charAt(0), Pair::of));
     }
 
-    private List<String> toList(Iterable<Tuple<String, String>> tuples) {
+    private List<String> toList(Iterable<Pair<String, String>> tuples) {
         return StreamSupport.stream(tuples.spliterator(), false)
                 .map(t -> t.element1() + ":" + t.element2())
                 .collect(Collectors.toList());

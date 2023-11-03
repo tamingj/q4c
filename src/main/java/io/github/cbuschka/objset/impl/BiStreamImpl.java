@@ -1,7 +1,7 @@
 package io.github.cbuschka.objset.impl;
 
 import io.github.cbuschka.objset.BiStream;
-import io.github.cbuschka.objset.Tuple;
+import io.github.cbuschka.objset.Pair;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -9,13 +9,13 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class BiStreamImpl<Element1, Element2> implements BiStream<Element1, Element2> {
-    private final Stream<Tuple<Element1, Element2>> source;
+    private final Stream<Pair<Element1, Element2>> source;
 
-    public BiStreamImpl(Stream<Tuple<Element1, Element2>> source) {
+    public BiStreamImpl(Stream<Pair<Element1, Element2>> source) {
         this.source = source;
     }
 
-    private Stream<Tuple<Element1, Element2>> tupleStream() {
+    private Stream<Pair<Element1, Element2>> tupleStream() {
         return StreamSupport.stream(source.spliterator(), false);
     }
 

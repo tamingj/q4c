@@ -1,5 +1,6 @@
 package io.github.cbuschka.objset;
 
+import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -15,28 +16,48 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class UniOpsTest {
-    @Mock
-    private Person person1;
-    @Mock
-    private Person person2;
+  @Mock
+  private Person person1;
+  @Mock
+  private Person person2;
 
-    @Test
-    void allOfMultipleEntities() {
-        List<Person> result = ObjectSet.of(Person.class, List.of(person1, person2))
-                .select(Person.class)
-                .toList();
+  private List<Person> result;
 
-        assertThat(result).containsExactly(person1, person2);
-    }
+  @Test
+  void allOfMultipleEntities() {
+    givenAreTwoPersons();
 
-    @Test
-    void filteredOfMultipleEntity() {
-        when(person1.getName()).thenReturn("frank");
-        when(person2.getName()).thenReturn("john");
-        List<Person> result = ObjectSet.of(Person.class, List.of(person1, person2))
-                .select(Person.class)
-                .where(i -> i.getName().equals("john"))
-                .toList();
-        assertThat(result).containsExactly(person2);
-    }
+    whenQueried((objSet) -> objSet.select(Person.class)
+        .toList());
+
+    thenResultContainsAllPersons();
+  }
+
+  private void thenResultContainsAllPersons() {
+    assertThat(result).containsExactly(person1, person2);
+  }
+
+  @Test
+  void filteredOfMultipleEntity() {
+    givenAreTwoPersons();
+
+    whenQueried((objSet) -> objSet.select(Person.class)
+        .where(i -> i.getName().equals("john"))
+        .toList());
+
+    thenResultContainsPerson2Only();
+  }
+
+  private void thenResultContainsPerson2Only() {
+    assertThat(result).containsExactly(person2);
+  }
+
+  private void whenQueried(Function<ObjectSet, List<Person>> func) {
+    this.result = func.apply(ObjectSet.of(Person.class, List.of(person1, person2)));
+  }
+
+  private void givenAreTwoPersons() {
+    when(person1.getName()).thenReturn("frank");
+    when(person2.getName()).thenReturn("john");
+  }
 }

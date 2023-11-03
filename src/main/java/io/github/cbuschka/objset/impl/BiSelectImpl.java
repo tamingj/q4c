@@ -9,15 +9,15 @@ import java.util.stream.StreamSupport;
 
 public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Element1, Element2> {
     private final ObjectSetImpl objectSet;
-    private final Iterable<Tuple<Element1, Element2>> tupleStream;
+    private final Iterable<Pair<Element1, Element2>> tupleStream;
 
-    public BiSelectImpl(ObjectSetImpl objectSet, Iterable<Tuple<Element1, Element2>> tupleStream) {
+    public BiSelectImpl(ObjectSetImpl objectSet, Iterable<Pair<Element1, Element2>> tupleStream) {
         this.objectSet = objectSet;
         this.tupleStream = tupleStream;
     }
 
     @Override
-    public Stream<Tuple<Element1, Element2>> tupleStream() {
+    public Stream<Pair<Element1, Element2>> tupleStream() {
         return StreamSupport.stream(tupleStream.spliterator(), false);
     }
 
