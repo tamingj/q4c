@@ -1,5 +1,6 @@
 package io.github.cbuschka.objset.impl;
 
+import io.github.cbuschka.objset.BiPredicate;
 import io.github.cbuschka.objset.BiStream;
 import io.github.cbuschka.objset.Pair;
 
@@ -27,5 +28,15 @@ public class BiStreamImpl<Element1, Element2> implements BiStream<Element1, Elem
     @Override
     public <Result> Stream<Result> map(BiFunction<Element1, Element2, Result> mapper) {
         return tupleStream().map((t) -> mapper.apply(t.element1(), t.element2()));
+    }
+
+    @Override
+    public BiStream<Element1, Element2> filter(BiPredicate<Element1, Element2> condition) {
+        return new BiStreamImpl<>(source.filter(pair -> condition.test(pair.element1(), pair.element2())));
+    }
+
+    @Override
+    public BiStream<Element1, Element2> peek(BiConsumer<Element1, Element2> consumer) {
+        return new BiStreamImpl<>(source.peek(pair -> consumer.accept(pair.element1(), pair.element2())));
     }
 }

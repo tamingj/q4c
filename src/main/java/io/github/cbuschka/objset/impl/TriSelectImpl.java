@@ -26,6 +26,6 @@ public class TriSelectImpl<Element1, Element2, Element3> implements FilterableTr
 
     @Override
     public TriStream<Element1, Element2, Element3> stream() {
-        return new TriStreamImpl<>(source);
+        return new TriStreamImpl<>(tripleStream());
     }
 }
