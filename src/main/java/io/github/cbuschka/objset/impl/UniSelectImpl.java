@@ -29,6 +29,18 @@ class UniSelectImpl<Element1> implements FilterableUniSelect<Element1> {
     }
 
     @Override
+    public <Element2, Key> BiSelect<Element1, Element2> rightOuterJoin(Class<Element2> element2Type, Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc) {
+        List<Element2> right = objectSet.getElementsFor(element2Type);
+        return new BiSelectImpl<>(objectSet, Joins.rightOuterJoin(elements, element1KeyFunc, right, element2KeyFunc, Pair::of));
+    }
+
+    @Override
+    public <Element2, Key> BiSelect<Element1, Element2> fullOuterJoin(Class<Element2> element2Type, Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc) {
+        List<Element2> right = objectSet.getElementsFor(element2Type);
+        return new BiSelectImpl<>(objectSet, Joins.fullOuterJoin(elements, element1KeyFunc, right, element2KeyFunc, Pair::of));
+    }
+
+    @Override
     public UniSelect<Element1> where(Function<Element1, Boolean> condition) {
         return new UniSelectImpl<>(objectSet, FilteredIterator.filter(this.elements, condition));
     }
