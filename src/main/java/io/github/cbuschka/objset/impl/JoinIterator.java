@@ -73,9 +73,14 @@ public class JoinIterator<Left, Right, Key, Result> implements Iterator<Result> 
             Key key = elementType1KeyFunction.apply(nextLeft);
             List<Right> rights = element2ByKeyMap.get(key);
             switch (joinMode) {
-                case INNER -> fillLeftInner(nextLeft, rights);
-                case LEFT_OUTER -> fillLeftOuter(nextLeft, rights);
-                default -> throw new IllegalArgumentException("Invalid join type %s.".formatted(joinMode));
+                case INNER:
+                    fillLeftInner(nextLeft, rights);
+                    break;
+                case LEFT_OUTER:
+                    fillLeftOuter(nextLeft, rights);
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Invalid join type %s.", joinMode));
             }
         }
     }

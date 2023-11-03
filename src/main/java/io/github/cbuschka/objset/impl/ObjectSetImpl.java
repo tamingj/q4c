@@ -33,7 +33,7 @@ public class ObjectSetImpl implements ObjectSet {
         @SuppressWarnings("unchecked")
         List<Element1> elements = (List<Element1>) elementsByType.get(type);
         if (elements == null) {
-            throw new NoSuchElementException("No elements for %s.".formatted(type.getName()));
+            throw new NoSuchElementException(String.format("No elements for %s.", type.getName()));
         }
         return elements;
     }

@@ -1,5 +1,6 @@
 package io.github.cbuschka.objset;
 
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -88,7 +89,7 @@ class LeftOuterJoinsTest {
     private List<String> toList(Iterable<Tuple<String, String>> tuples) {
         return StreamSupport.stream(tuples.spliterator(), false)
                 .map(t -> t.element1() + ":" + t.element2())
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private void givenLeft(String... left) {

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface BiSelect<Element1, Element2> {
@@ -20,7 +21,7 @@ public interface BiSelect<Element1, Element2> {
     }
 
     default List<Tuple<Element1, Element2>> toList() {
-        return tupleStream().toList();
+        return tupleStream().collect(Collectors.toList());
     }
 
     Stream<Tuple<Element1, Element2>> tupleStream();
