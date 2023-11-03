@@ -2,6 +2,7 @@ package io.github.cbuschka.objset.impl;
 
 import io.github.cbuschka.objset.FilterableUniSelect;
 import io.github.cbuschka.objset.ObjectSet;
+import java.util.stream.Stream;
 import lombok.NoArgsConstructor;
 
 import java.util.*;
@@ -15,7 +16,16 @@ public class ObjectSetImpl implements ObjectSet {
         return this;
     }
 
+    public <Element> ObjectSetImpl with(Class<Element> type, Stream<Element> elements) {
+        addAll(type, elements);
+        return this;
+    }
+
     public <Element> void addAll(Class<Element> type, Iterable<Element> elements) {
+        elements.forEach((e) -> addElement(type, e));
+    }
+
+    public <Element> void addAll(Class<Element> type, Stream<Element> elements) {
         elements.forEach((e) -> addElement(type, e));
     }
 
