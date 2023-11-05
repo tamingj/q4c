@@ -1,36 +1,37 @@
 package io.github.cbuschka.objset.impl;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class LeftOuterJoinIterator<Element1, Element2, Key, Result> extends JoinIterator<Element1, Element2, Key, Result> {
-    private final Iterator<Element1> element1s;
-    private final Function<Element1, Key> element1KeyFunc;
-    private final Map<Key, List<Element2>> element2sByKey;
+public class LeftOuterJoinIterator<Left, Right, Key, Result> extends JoinIterator<Left, Right, Key, Result> {
+    private final Iterator<Left> lefts;
+    private final Function<Left, Key> leftKeyFunc;
+    private final Map<Key, List<Right>> rightsByKey;
 
-    public LeftOuterJoinIterator(Iterator<Element1> element1s, Function<Element1, Key> element1KeyFunc, Iterator<Element2> element2s, Function<Element2, Key> element2KeyFunc, BiFunction<Element1, Element2, Result> resultMapFunction) {
+    public LeftOuterJoinIterator(Iterator<Left> lefts, Function<Left, Key> leftKeyFunc, Iterator<Right> element2s, Function<Right, Key> element2KeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
         super(resultMapFunction);
-        this.element1s = element1s;
-        this.element1KeyFunc = element1KeyFunc;
-        this.element2sByKey = getElementsByKeyMap(element2s, element2KeyFunc);
+        this.lefts = lefts;
+        this.leftKeyFunc = leftKeyFunc;
+        this.rightsByKey = getElementsByKeyMap(element2s, element2KeyFunc);
     }
 
     @Override
     protected boolean fill() {
-        if (!element1s.hasNext()) {
+        if (!lefts.hasNext()) {
             return false;
         }
 
-        Element1 left = element1s.next();
-        Key element1Key = element1KeyFunc.apply(left);
-        List<Element2> rights = element2sByKey.get(element1Key);
-        if (rights == null || rights.isEmpty()) {
+        Left left = lefts.next();
+        Key key = leftKeyFunc.apply(left);
+        List<Right> rights = rightsByKey.getOrDefault(key, Collections.emptyList());
+        if (rights.isEmpty()) {
             addToBuffer(left, null);
         } else {
-            for (Element2 right : rights) {
+            for (Right right : rights) {
                 addToBuffer(left, right);
             }
         }
