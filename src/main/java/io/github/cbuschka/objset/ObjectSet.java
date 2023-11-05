@@ -22,5 +22,5 @@ public interface ObjectSet {
 
     <Element> ObjectSet with(Class<Element> type, Iterable<Element> elements);
 
-    <Element> FilterableUniSelect<Element> select(Class<Element> type);
+    <Element> FilterableUniSelect<Element> selectFrom(Class<Element> type);
 }

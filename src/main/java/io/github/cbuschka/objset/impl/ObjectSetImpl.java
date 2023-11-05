@@ -35,7 +35,7 @@ public class ObjectSetImpl implements ObjectSet {
         elements.add(element);
     }
 
-    public <Element1> FilterableUniSelect<Element1> select(Class<Element1> type) {
+    public <Element1> FilterableUniSelect<Element1> selectFrom(Class<Element1> type) {
         return new UniSelectImpl<>(this, getElementsFor(type));
     }
 

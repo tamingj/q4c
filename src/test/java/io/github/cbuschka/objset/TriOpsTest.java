@@ -35,7 +35,7 @@ public class TriOpsTest {
     givenPerson1WithTwoAddressesAndOrder();
     givenPerson2WithoutAddressesAndOrder();
 
-    whenQueried(objSet -> objSet.select(Person.class)
+    whenQueried(objSet -> objSet.selectFrom(Person.class)
         .join(Address.class, Person::getId, Address::getPersonId)
         .join(Order.class, (person, address) -> person.getId(), Order::getPersonId)
         .toList());
@@ -66,7 +66,7 @@ public class TriOpsTest {
     givenPerson1WithTwoAddressesAndOrder();
     givenPerson2WithoutAddressesAndOrder();
 
-    whenQueried(objSet -> objSet.select(Person.class)
+    whenQueried(objSet -> objSet.selectFrom(Person.class)
         .join(Address.class, Person::getId, Address::getPersonId)
         .join(Order.class, (person, address) -> person.getId(), Order::getPersonId)
         .where((i, s, ss) -> s != address2)

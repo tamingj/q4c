@@ -27,7 +27,7 @@ public class UniOpsTest {
   void allOfMultipleEntities() {
     givenAreTwoPersons();
 
-    whenQueried((objSet) -> objSet.select(Person.class)
+    whenQueried((objSet) -> objSet.selectFrom(Person.class)
         .toList());
 
     thenResultContainsAllPersons();
@@ -41,7 +41,7 @@ public class UniOpsTest {
   void filteredOfMultipleEntity() {
     givenAreTwoPersons();
 
-    whenQueried((objSet) -> objSet.select(Person.class)
+    whenQueried((objSet) -> objSet.selectFrom(Person.class)
         .where(i -> i.getName().equals("john"))
         .toList());
 
