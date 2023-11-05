@@ -2,8 +2,6 @@ package io.github.cbuschka.objset.impl;
 
 import io.github.cbuschka.objset.*;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -15,7 +13,7 @@ public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Elem
     }
 
     @Override
-    public Stream<Pair<Element1, Element2>> tupleStream() {
+    public Stream<Pair<Element1, Element2>> pairStream() {
         return StreamSupport.stream(source.spliterator(), false);
     }
 
@@ -26,7 +24,7 @@ public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Elem
 
     @Override
     public BiStream<Element1, Element2> stream() {
-        return new BiStreamImpl<>(tupleStream());
+        return new BiStreamImpl<>(pairStream());
     }
 
     @Override
