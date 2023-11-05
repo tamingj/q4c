@@ -19,30 +19,30 @@ class UniSelectImpl<Element1> implements FilterableUniSelect<Element1> {
     @Override
     public <Element2, KeyType> FilterableBiSelect<Element1, Element2> join(Class<Element2> element2Type, Function<Element1, KeyType> element1KeyFunc, Function<Element2, KeyType> element2KeyFunc) {
         List<Element2> right = objectSet.getElementsFor(element2Type);
-        return new BiSelectImpl<>(objectSet, Joins.innerJoin(elements.iterator(), element1KeyFunc, right.iterator(), element2KeyFunc, Pair::of));
+        return new BiSelectImpl<>(objectSet, JoinIterator.forInnerJoin(elements, element1KeyFunc, right, element2KeyFunc, Pair::of));
     }
 
     @Override
     public <Element2, KeyType> BiSelect<Element1, Element2> leftOuterJoin(Class<Element2> element2Type, Function<Element1, KeyType> element1KeyFunc, Function<Element2, KeyType> element2KeyFunc) {
-        List<Element2> right = objectSet.getElementsFor(element2Type);
-        return new BiSelectImpl<>(objectSet, Joins.leftOuterJoin(elements.iterator(), element1KeyFunc, right.iterator(), element2KeyFunc, Pair::of));
+        List<Element2> rights = objectSet.getElementsFor(element2Type);
+        return new BiSelectImpl<>(objectSet, JoinIterator.forLeftOuterJoin(elements, element1KeyFunc, rights, element2KeyFunc, Pair::of));
     }
 
     @Override
     public <Element2, Key> BiSelect<Element1, Element2> rightOuterJoin(Class<Element2> element2Type, Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc) {
         List<Element2> right = objectSet.getElementsFor(element2Type);
-        return new BiSelectImpl<>(objectSet, Joins.rightOuterJoin(elements.iterator(), element1KeyFunc, right.iterator(), element2KeyFunc, Pair::of));
+        return new BiSelectImpl<>(objectSet, JoinIterator.forRightOuterJoin(elements, element1KeyFunc, right, element2KeyFunc, Pair::of));
     }
 
     @Override
     public <Element2, Key> BiSelect<Element1, Element2> fullOuterJoin(Class<Element2> element2Type, Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc) {
         List<Element2> right = objectSet.getElementsFor(element2Type);
-        return new BiSelectImpl<>(objectSet, Joins.fullOuterJoin(elements.iterator(), element1KeyFunc, right.iterator(), element2KeyFunc, Pair::of));
+        return new BiSelectImpl<>(objectSet, JoinIterator.forFullOuterJoin(elements, element1KeyFunc, right, element2KeyFunc, Pair::of));
     }
 
     @Override
     public UniSelect<Element1> where(Function<Element1, Boolean> condition) {
-        return new UniSelectImpl<>(objectSet, FilteredIterator.filter(this.elements, condition));
+        return new UniSelectImpl<>(objectSet, FilteredIterator.filtered(this.elements, condition));
     }
 
     @Override

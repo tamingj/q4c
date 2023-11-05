@@ -11,25 +11,20 @@ public abstract class JoinIterator<Left, Right, Key, Result> implements Iterator
     private final BiFunction<Left, Right, Result> resultMapFunction;
     private final List<Result> buffer = new LinkedList<>();
 
-    public static <Left, Right, Key, Result> Iterable<Result> wrap(JoinMode joinMode,
-                                                                   Iterator<Left> lefts,
-                                                                   Function<Left, Key> leftKeyFunction,
-                                                                   Iterator<Right> rights,
-                                                                   Function<Right, Key> rightKeyFunction,
-                                                                   BiFunction<Left, Right, Result> resultMapFunction) {
+    public static <Left, Right, Key, Result> Iterable<Result> forFullOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
+        return () -> new FullOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+    }
 
-        switch (joinMode) {
-            case INNER:
-                return () -> new InnerJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
-            case LEFT_OUTER:
-                return () -> new LeftOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
-            case RIGHT_OUTER:
-                return () -> new RightOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
-            case FULL_OUTER:
-                return () -> new FullOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
-            default:
-                throw new IllegalArgumentException("Unsupported join mode " + joinMode + ".");
-        }
+    public static <Left, Right, Key, Result> Iterable<Result> forRightOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
+        return () -> new RightOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+    }
+
+    public static <Left, Right, Key, Result> Iterable<Result> forLeftOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
+        return () -> new LeftOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+    }
+
+    public static <Left, Right, Key, Result> Iterable<Result> forInnerJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
+        return () -> new InnerJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
     }
 
     protected JoinIterator(BiFunction<Left, Right, Result> resultMapFunction) {
@@ -63,10 +58,9 @@ public abstract class JoinIterator<Left, Right, Key, Result> implements Iterator
                 false);
     }
 
-    protected <Element> Map<Key, List<Element>> getElementsByKeyMap(Iterator<Element> elements, Function<Element, Key> keyFunction) {
+    protected <Element> Map<Key, List<Element>> getElementsByKeyMap(Iterable<Element> elements, Function<Element, Key> keyFunction) {
         Map<Key, List<Element>> elementsByKey = new HashMap<>();
-        while (elements.hasNext()) {
-            Element element = elements.next();
+        for(Element element : elements) {
             Key key = keyFunction.apply(element);
             elementsByKey
                     .computeIfAbsent(key, k -> new ArrayList<>())

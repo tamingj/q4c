@@ -12,9 +12,9 @@ public class LeftOuterJoinIterator<Left, Right, Key, Result> extends JoinIterato
     private final Function<Left, Key> leftKeyFunc;
     private final Map<Key, List<Right>> rightsByKey;
 
-    public LeftOuterJoinIterator(Iterator<Left> lefts, Function<Left, Key> leftKeyFunc, Iterator<Right> element2s, Function<Right, Key> element2KeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
+    public LeftOuterJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> element2s, Function<Right, Key> element2KeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
         super(resultMapFunction);
-        this.lefts = lefts;
+        this.lefts = lefts.iterator();
         this.leftKeyFunc = leftKeyFunc;
         this.rightsByKey = getElementsByKeyMap(element2s, element2KeyFunc);
     }

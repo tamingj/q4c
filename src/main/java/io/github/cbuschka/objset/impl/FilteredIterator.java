@@ -9,7 +9,7 @@ public class FilteredIterator<E> implements Iterator<E> {
     private final Function<E, Boolean> filter;
     private Object[] buf;
 
-    public static <E> Iterable<E> filter(Iterable<E> source, Function<E, Boolean> filter) {
+    public static <E> Iterable<E> filtered(Iterable<E> source, Function<E, Boolean> filter) {
         return () -> new FilteredIterator<>(source.iterator(), filter);
     }
 
