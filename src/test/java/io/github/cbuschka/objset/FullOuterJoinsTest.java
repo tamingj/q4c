@@ -26,12 +26,12 @@ class FullOuterJoinsTest {
 
     @Test
     void disjunctSets() {
-        givenLeft("a");
-        givenRight("b");
+        givenLeft("a0", "a1");
+        givenRight("b0", "b1");
 
         whenFullOuterJoined();
 
-        thenResultIs("a:null", "null:b");
+        thenResultIs("a0:null", "a1:null", "null:b0", "null:b1");
     }
 
     @Test
