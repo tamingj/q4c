@@ -83,7 +83,7 @@ class FullOuterJoinsTest {
     }
 
     private void whenFullOuterJoined() {
-        this.result = toList(Joins.fullOuterJoin(left, s -> s.charAt(0), right, s -> s.charAt(0), Pair::of));
+        this.result = toList(Joins.fullOuterJoin(left.iterator(), s -> s.charAt(0), right.iterator(), s -> s.charAt(0), Pair::of));
     }
 
     private List<String> toList(Iterable<Pair<String, String>> tuples) {

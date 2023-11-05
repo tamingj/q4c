@@ -32,7 +32,7 @@ public class BiOpsTest {
     givenIsPerson1WithTwoAddresses();
     givenIsPerson2WithoutAddress();
 
-    whenQueried(objSet -> objSet.select(Person.class)
+    whenQueried(objSet -> objSet.selectFrom(Person.class)
         .join(Address.class, Person::getId, Address::getPersonId)
         .toList());
 
@@ -54,7 +54,7 @@ public class BiOpsTest {
     givenIsPerson1WithTwoAddresses();
     givenIsPerson2WithoutAddress();
 
-    whenQueried(objSet -> objSet.select(Person.class)
+    whenQueried(objSet -> objSet.selectFrom(Person.class)
         .leftOuterJoin(Address.class, Person::getId, Address::getPersonId)
         .toList());
 
@@ -67,7 +67,7 @@ public class BiOpsTest {
     givenIsPerson1WithTwoAddresses();
     givenIsPerson2WithoutAddress();
 
-    whenQueried(objSet -> objSet.select(Person.class)
+    whenQueried(objSet -> objSet.selectFrom(Person.class)
         .leftOuterJoin(Address.class, Person::getId, Address::getPersonId)
         .where((i, s) -> s != address2)
         .toList());
