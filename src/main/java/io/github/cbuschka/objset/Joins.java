@@ -7,10 +7,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static io.github.cbuschka.objset.impl.JoinIterator.JoinMode.FULL_OUTER;
-import static io.github.cbuschka.objset.impl.JoinIterator.JoinMode.INNER;
-import static io.github.cbuschka.objset.impl.JoinIterator.JoinMode.LEFT_OUTER;
-import static io.github.cbuschka.objset.impl.JoinIterator.JoinMode.RIGHT_OUTER;
+import static io.github.cbuschka.objset.impl.JoinMode.FULL_OUTER;
+import static io.github.cbuschka.objset.impl.JoinMode.INNER;
+import static io.github.cbuschka.objset.impl.JoinMode.LEFT_OUTER;
+import static io.github.cbuschka.objset.impl.JoinMode.RIGHT_OUTER;
 
 public class Joins {
 
