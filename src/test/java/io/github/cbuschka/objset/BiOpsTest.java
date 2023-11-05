@@ -70,7 +70,7 @@ public class BiOpsTest {
 
     whenQueried((persons, addresses) -> ObjectQuery.selectFrom(persons)
         .leftOuterJoin(addresses).on(Person::getId, Address::getPersonId)
-        .where((i, s) -> s != address2)
+        .where((person, address) -> address != address2)
         .toList());
 
     assertThat(result).containsExactly(Pair.of(person1, address1), Pair.of(person2, null));

@@ -42,7 +42,7 @@ public class UniOpsTest {
     givenAreTwoPersons();
 
     whenQueried((persons) -> ObjectQuery.selectFrom(persons)
-        .where(i -> i.getName().equals("john"))
+        .where(person -> person.getName().equals("john"))
         .toList());
 
     thenResultContainsPerson2Only();
