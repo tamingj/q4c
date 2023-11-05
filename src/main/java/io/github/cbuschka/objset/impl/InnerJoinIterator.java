@@ -12,9 +12,9 @@ public class InnerJoinIterator<Left, Right, Key, Result> extends JoinIterator<Le
     private final Function<Left, Key> leftKeyFunc;
     private final Map<Key, List<Right>> rights;
 
-    public InnerJoinIterator(Iterator<Left> lefts, Function<Left, Key> leftKeyFunc, Iterator<Right> rights, Function<Right, Key> rightKeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
+    public InnerJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> rights, Function<Right, Key> rightKeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
         super(resultMapFunction);
-        this.lefts = lefts;
+        this.lefts = lefts.iterator();
         this.leftKeyFunc = leftKeyFunc;
         this.rights = getElementsByKeyMap(rights, rightKeyFunc);
     }

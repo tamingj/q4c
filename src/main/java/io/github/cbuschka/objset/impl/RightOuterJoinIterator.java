@@ -12,9 +12,9 @@ public class RightOuterJoinIterator<Left, Right, Key, Result> extends JoinIterat
     private final Iterator<Right> rights;
     private final Function<Right, Key> rightKeyFunc;
 
-    public RightOuterJoinIterator(Iterator<Left> element1s, Function<Left, Key> element1KeyFunc, Iterator<Right> rights, Function<Right, Key> rightKeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
+    public RightOuterJoinIterator(Iterable<Left> element1s, Function<Left, Key> element1KeyFunc, Iterable<Right> rights, Function<Right, Key> rightKeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
         super(resultMapFunction);
-        this.rights = rights;
+        this.rights = rights.iterator();
         this.rightKeyFunc = rightKeyFunc;
         this.leftsByKey = getElementsByKeyMap(element1s, element1KeyFunc);
     }

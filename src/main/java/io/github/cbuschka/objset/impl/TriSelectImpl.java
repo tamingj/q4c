@@ -16,7 +16,7 @@ public class TriSelectImpl<Element1, Element2, Element3> implements FilterableTr
 
     @Override
     public TriSelect<Element1, Element2, Element3> where(TriFunction<Element1, Element2, Element3, Boolean> condition) {
-        return new TriSelectImpl<>(objectSet, FilteredIterator.filter(source, (t) -> condition.apply(t.element1(), t.element2(), t.element3())));
+        return new TriSelectImpl<>(objectSet, FilteredIterator.filtered(source, (t) -> condition.apply(t.element1(), t.element2(), t.element3())));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package io.github.cbuschka.objset;
 
 import java.util.stream.Collectors;
+
+import io.github.cbuschka.objset.impl.JoinIterator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -83,7 +85,7 @@ class LeftOuterJoinsTest {
     }
 
     private void whenLeftOuterJoined() {
-        this.result = toList(Joins.leftOuterJoin(left.iterator(), s -> s.charAt(0), right.iterator(), s -> s.charAt(0), Pair::of));
+        this.result = toList(JoinIterator.forLeftOuterJoin(left, s -> s.charAt(0), right, s1 -> s1.charAt(0), Pair::of));
     }
 
     private List<String> toList(Iterable<Pair<String, String>> tuples) {

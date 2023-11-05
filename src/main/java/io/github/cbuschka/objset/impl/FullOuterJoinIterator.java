@@ -7,10 +7,10 @@ import java.util.function.Function;
 public class FullOuterJoinIterator<Left, Right, Key, Result> extends JoinIterator<Left, Right, Key, Result> {
     private final Iterator<Map.Entry<Key, CombinedElements<Left, Right>>> combinedElementsIter;
 
-    public FullOuterJoinIterator(Iterator<Left> lefts, Function<Left, Key> leftKeyFunc, Iterator<Right> rights, Function<Right, Key> rightKeyFunc, BiFunction<Left, Right, Result> resultMapFunc) {
+    public FullOuterJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> rights, Function<Right, Key> rightKeyFunc, BiFunction<Left, Right, Result> resultMapFunc) {
         super(resultMapFunc);
 
-        var combinedElementsByKeyMap = index(lefts, leftKeyFunc, rights, rightKeyFunc);
+        var combinedElementsByKeyMap = index(lefts.iterator(), leftKeyFunc, rights.iterator(), rightKeyFunc);
         combinedElementsIter = combinedElementsByKeyMap.entrySet().iterator();
     }
 
