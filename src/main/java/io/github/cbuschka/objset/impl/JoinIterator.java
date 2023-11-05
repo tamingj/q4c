@@ -11,6 +11,21 @@ public abstract class JoinIterator<Left, Right, Key, Result> implements Iterator
     private final BiFunction<Left, Right, Result> resultMapFunction;
     private final List<Result> buffer = new LinkedList<>();
 
+    public static <Left, Right, Key, Result> Iterable<Result> of(JoinMode joinMode, Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
+        switch (joinMode) {
+            case INNER:
+                return forInnerJoin(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+            case FULL_OUTER:
+                return forFullOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+            case LEFT_OUTER:
+                return forLeftOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+            case RIGHT_OUTER:
+                return forRightOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+            default:
+                throw new IllegalArgumentException("Invalid join mode: " + joinMode + ".");
+        }
+    }
+
     public static <Left, Right, Key, Result> Iterable<Result> forFullOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
         return () -> new FullOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
     }
@@ -60,7 +75,7 @@ public abstract class JoinIterator<Left, Right, Key, Result> implements Iterator
 
     protected <Element> Map<Key, List<Element>> getElementsByKeyMap(Iterable<Element> elements, Function<Element, Key> keyFunction) {
         Map<Key, List<Element>> elementsByKey = new HashMap<>();
-        for(Element element : elements) {
+        for (Element element : elements) {
             Key key = keyFunction.apply(element);
             elementsByKey
                     .computeIfAbsent(key, k -> new ArrayList<>())

@@ -30,22 +30,22 @@ public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Elem
     }
 
     @Override
-    public <Element3, Key> TriSelect<Element1, Element2, Element3> join(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
-        return new TriSelectImpl<>(JoinIterator.forInnerJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, right) -> Triple.of(left.element1(), left.element2(), right)));
+    public <Element3> BiSelectJoin<Element1, Element2, Element3> join(Iterable<Element3> element3s) {
+        return new BiSelectJoinImpl<>(JoinMode.INNER, source, element3s);
     }
 
     @Override
-    public <Element3, Key> TriSelect<Element1, Element2, Element3> leftOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
-        return new TriSelectImpl<>(JoinIterator.forLeftOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, right) -> Triple.of(left.element1(), left.element2(), right)));
+    public <Element3> BiSelectJoin<Element1, Element2, Element3> leftOuterJoin(Iterable<Element3> element3s) {
+        return new BiSelectJoinImpl<>(JoinMode.LEFT_OUTER, source, element3s);
     }
 
     @Override
-    public <Element3, Key> TriSelect<Element1, Element2, Element3> rightOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
-        return new TriSelectImpl<>(JoinIterator.forRightOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, rigth) -> Triple.of(left.element1(), left.element2(), rigth)));
+    public <Element3> BiSelectJoin<Element1, Element2, Element3> rightOuterJoin(Iterable<Element3> element3s) {
+        return new BiSelectJoinImpl<>(JoinMode.RIGHT_OUTER, source, element3s);
     }
 
     @Override
-    public <Element3, Key> TriSelect<Element1, Element2, Element3> fullOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
-        return new TriSelectImpl<>(JoinIterator.forFullOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, rigth) -> Triple.of(left.element1(), left.element2(), rigth)));
+    public <Element3> BiSelectJoin<Element1, Element2, Element3> fullOuterJoin(Iterable<Element3> element3s) {
+        return new BiSelectJoinImpl<>(JoinMode.FULL_OUTER, source, element3s);
     }
 }

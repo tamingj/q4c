@@ -34,7 +34,7 @@ public class BiOpsTest {
     givenIsPerson2WithoutAddress();
 
     whenQueried((persons, addresses) -> ObjectQuery.selectFrom(persons)
-            .join(addresses, Person::getId, Address::getPersonId)
+            .join(addresses).on(Person::getId, Address::getPersonId)
             .toList());
 
     assertThat(result).containsExactly(Pair.of(person1, address1), Pair.of(person1, address2));
@@ -56,7 +56,7 @@ public class BiOpsTest {
     givenIsPerson2WithoutAddress();
 
     whenQueried((persons, addresses) -> ObjectQuery.selectFrom(persons)
-            .leftOuterJoin(addresses, Person::getId, Address::getPersonId)
+            .leftOuterJoin(addresses).on(Person::getId, Address::getPersonId)
             .toList());
 
     assertThat(result).containsExactly(Pair.of(person1, address1), Pair.of(person1, address2),
@@ -69,7 +69,7 @@ public class BiOpsTest {
     givenIsPerson2WithoutAddress();
 
     whenQueried((persons, addresses) -> ObjectQuery.selectFrom(persons)
-        .leftOuterJoin(addresses, Person::getId, Address::getPersonId)
+        .leftOuterJoin(addresses).on(Person::getId, Address::getPersonId)
         .where((i, s) -> s != address2)
         .toList());
 

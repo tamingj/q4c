@@ -1,8 +1,9 @@
 package io.github.cbuschka.objset.impl;
 
-import io.github.cbuschka.objset.*;
+import io.github.cbuschka.objset.FilterableUniSelect;
+import io.github.cbuschka.objset.UniSelect;
+import io.github.cbuschka.objset.UniSelectJoin;
 
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -15,23 +16,23 @@ public class UniSelectImpl<Element1> implements FilterableUniSelect<Element1> {
     }
 
     @Override
-    public <Element2, KeyType> FilterableBiSelect<Element1, Element2> join(Iterable<Element2> element2s, Function<Element1, KeyType> element1KeyFunc, Function<Element2, KeyType> element2KeyFunc) {
-        return new BiSelectImpl<>(JoinIterator.forInnerJoin(elements, element1KeyFunc, element2s, element2KeyFunc, Pair::of));
+    public <Element2> UniSelectJoin<Element1, Element2> join(Iterable<Element2> element2s) {
+        return new UniSelectJoinImpl<>(JoinMode.INNER, elements, element2s);
     }
 
     @Override
-    public <Element2, KeyType> FilterableBiSelect<Element1, Element2> leftOuterJoin(Iterable<Element2> element2s, Function<Element1, KeyType> element1KeyFunc, Function<Element2, KeyType> element2KeyFunc) {
-        return new BiSelectImpl<>(JoinIterator.forLeftOuterJoin(elements, element1KeyFunc, element2s, element2KeyFunc, Pair::of));
+    public <Element2> UniSelectJoin<Element1, Element2> leftOuterJoin(Iterable<Element2> element2s) {
+        return new UniSelectJoinImpl<>(JoinMode.LEFT_OUTER, elements, element2s);
     }
 
     @Override
-    public <Element2, Key> FilterableBiSelect<Element1, Element2> rightOuterJoin(Iterable<Element2> element2s, Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc) {
-        return new BiSelectImpl<>(JoinIterator.forRightOuterJoin(elements, element1KeyFunc, element2s, element2KeyFunc, Pair::of));
+    public <Element2> UniSelectJoin<Element1, Element2> rightOuterJoin(Iterable<Element2> element2s) {
+        return new UniSelectJoinImpl<>(JoinMode.RIGHT_OUTER, elements, element2s);
     }
 
     @Override
-    public <Element2, Key> FilterableBiSelect<Element1, Element2> fullOuterJoin(Iterable<Element2> element2s, Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc) {
-        return new BiSelectImpl<>(JoinIterator.forFullOuterJoin(elements, element1KeyFunc, element2s, element2KeyFunc, Pair::of));
+    public <Element2> UniSelectJoin<Element1, Element2> fullOuterJoin(Iterable<Element2> element2s) {
+        return new UniSelectJoinImpl<>(JoinMode.FULL_OUTER, elements, element2s);
     }
 
     @Override

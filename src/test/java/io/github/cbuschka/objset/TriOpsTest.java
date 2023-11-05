@@ -36,8 +36,8 @@ public class TriOpsTest {
     givenPerson2WithoutAddressesAndOrder();
 
     whenQueried((persons, addresses, orders) -> ObjectQuery.selectFrom(persons)
-        .join(addresses, Person::getId, Address::getPersonId)
-        .join(orders, (person, address) -> person.getId(), Order::getPersonId)
+        .join(addresses).on(Person::getId, Address::getPersonId)
+        .join(orders).on((person, address) -> person.getId(), Order::getPersonId)
         .toList());
 
     assertThat(result).containsExactly(Triple.of(person1, address1, order1),
@@ -68,8 +68,8 @@ public class TriOpsTest {
     givenPerson2WithoutAddressesAndOrder();
 
     whenQueried((persons, addresses, orders) -> ObjectQuery.selectFrom(persons)
-        .join(addresses, Person::getId, Address::getPersonId)
-        .join(orders, (person, address) -> person.getId(), Order::getPersonId)
+        .join(addresses).on(Person::getId, Address::getPersonId)
+        .join(orders).on((person, address) -> person.getId(), Order::getPersonId)
         .where((i, s, ss) -> s != address2)
         .toList());
 
