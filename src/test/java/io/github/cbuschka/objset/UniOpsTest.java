@@ -27,7 +27,7 @@ public class UniOpsTest {
   void allOfMultipleEntities() {
     givenAreTwoPersons();
 
-    whenQueried((objSet) -> objSet.selectFrom(Person.class)
+    whenQueried((persons) -> ObjectQuery.selectFrom(persons)
         .toList());
 
     thenResultContainsAllPersons();
@@ -41,7 +41,7 @@ public class UniOpsTest {
   void filteredOfMultipleEntity() {
     givenAreTwoPersons();
 
-    whenQueried((objSet) -> objSet.selectFrom(Person.class)
+    whenQueried((persons) -> ObjectQuery.selectFrom(persons)
         .where(i -> i.getName().equals("john"))
         .toList());
 
@@ -52,8 +52,8 @@ public class UniOpsTest {
     assertThat(result).containsExactly(person2);
   }
 
-  private void whenQueried(Function<ObjectSet, List<Person>> func) {
-    this.result = func.apply(ObjectSet.of(Person.class, List.of(person1, person2)));
+  private void whenQueried(Function<List<Person>, List<Person>> func) {
+    this.result = func.apply(List.of(person1, person2));
   }
 
   private void givenAreTwoPersons() {

@@ -8,11 +8,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Element1, Element2> {
-    private final ObjectSetImpl objectSet;
     private final Iterable<Pair<Element1, Element2>> source;
 
-    public BiSelectImpl(ObjectSetImpl objectSet, Iterable<Pair<Element1, Element2>> source) {
-        this.objectSet = objectSet;
+    public BiSelectImpl(Iterable<Pair<Element1, Element2>> source) {
         this.source = source;
     }
 
@@ -22,8 +20,8 @@ public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Elem
     }
 
     @Override
-    public BiSelect<Element1, Element2> where(BiFunction<Element1, Element2, Boolean> condition) {
-        return new BiSelectImpl<>(objectSet, FilteredIterator.filtered(source, (tuple) -> condition.apply(tuple.element1(), tuple.element2())));
+    public BiSelect<Element1, Element2> where(BiPredicate<Element1, Element2> condition) {
+        return new BiSelectImpl<>(FilteredIterator.filtered(source, (tuple) -> condition.test(tuple.element1(), tuple.element2())));
     }
 
     @Override
@@ -32,22 +30,22 @@ public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Elem
     }
 
     @Override
-    public <Element3, Key> TriSelect<Element1, Element2, Element3> join(Class<Element3> element3Type, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
-        return new TriSelectImpl<>(objectSet, JoinIterator.forInnerJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), objectSet.getElementsFor(element3Type), element3KeyFunc, (left, right) -> Triple.of(left.element1(), left.element2(), right)));
+    public <Element3, Key> TriSelect<Element1, Element2, Element3> join(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
+        return new TriSelectImpl<>(JoinIterator.forInnerJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, right) -> Triple.of(left.element1(), left.element2(), right)));
     }
 
     @Override
-    public <Element3, Key> TriSelect<Element1, Element2, Element3> leftOuterJoin(Class<Element3> element3Type, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
-        return new TriSelectImpl<>(objectSet, JoinIterator.forLeftOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), objectSet.getElementsFor(element3Type), element3KeyFunc, (left, right) -> Triple.of(left.element1(), left.element2(), right)));
+    public <Element3, Key> TriSelect<Element1, Element2, Element3> leftOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
+        return new TriSelectImpl<>(JoinIterator.forLeftOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, right) -> Triple.of(left.element1(), left.element2(), right)));
     }
 
     @Override
-    public <Element3, Key> TriSelect<Element1, Element2, Element3> rightOuterJoin(Class<Element3> element3Type, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
-        return new TriSelectImpl<>(objectSet, JoinIterator.forRightOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), objectSet.getElementsFor(element3Type), element3KeyFunc, (left, rigth) -> Triple.of(left.element1(), left.element2(), rigth)));
+    public <Element3, Key> TriSelect<Element1, Element2, Element3> rightOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
+        return new TriSelectImpl<>(JoinIterator.forRightOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, rigth) -> Triple.of(left.element1(), left.element2(), rigth)));
     }
 
     @Override
-    public <Element3, Key> TriSelect<Element1, Element2, Element3> fullOuterJoin(Class<Element3> element3Type, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
-        return new TriSelectImpl<>(objectSet, JoinIterator.forFullOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), objectSet.getElementsFor(element3Type), element3KeyFunc, (left, rigth) -> Triple.of(left.element1(), left.element2(), rigth)));
+    public <Element3, Key> TriSelect<Element1, Element2, Element3> fullOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
+        return new TriSelectImpl<>(JoinIterator.forFullOuterJoin(source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, rigth) -> Triple.of(left.element1(), left.element2(), rigth)));
     }
 }

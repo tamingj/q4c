@@ -1,8 +1,8 @@
 package io.github.cbuschka.objset;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 public interface FilterableUniSelect<Element> extends UniSelect<Element> {
-    UniSelect<Element> where(Function<Element, Boolean> condition);
+    UniSelect<Element> where(Predicate<Element> condition);
 }
 

@@ -1,5 +1,6 @@
 package io.github.cbuschka.objset;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,9 +33,9 @@ public class BiOpsTest {
     givenIsPerson1WithTwoAddresses();
     givenIsPerson2WithoutAddress();
 
-    whenQueried(objSet -> objSet.selectFrom(Person.class)
-        .join(Address.class, Person::getId, Address::getPersonId)
-        .toList());
+    whenQueried((persons, addresses) -> ObjectQuery.selectFrom(persons)
+            .join(addresses, Person::getId, Address::getPersonId)
+            .toList());
 
     assertThat(result).containsExactly(Pair.of(person1, address1), Pair.of(person1, address2));
   }
@@ -54,9 +55,9 @@ public class BiOpsTest {
     givenIsPerson1WithTwoAddresses();
     givenIsPerson2WithoutAddress();
 
-    whenQueried(objSet -> objSet.selectFrom(Person.class)
-        .leftOuterJoin(Address.class, Person::getId, Address::getPersonId)
-        .toList());
+    whenQueried((persons, addresses) -> ObjectQuery.selectFrom(persons)
+            .leftOuterJoin(addresses, Person::getId, Address::getPersonId)
+            .toList());
 
     assertThat(result).containsExactly(Pair.of(person1, address1), Pair.of(person1, address2),
         Pair.of(person2, null));
@@ -67,16 +68,17 @@ public class BiOpsTest {
     givenIsPerson1WithTwoAddresses();
     givenIsPerson2WithoutAddress();
 
-    whenQueried(objSet -> objSet.selectFrom(Person.class)
-        .leftOuterJoin(Address.class, Person::getId, Address::getPersonId)
+    whenQueried((persons, addresses) -> ObjectQuery.selectFrom(persons)
+        .leftOuterJoin(addresses, Person::getId, Address::getPersonId)
         .where((i, s) -> s != address2)
         .toList());
 
     assertThat(result).containsExactly(Pair.of(person1, address1), Pair.of(person2, null));
   }
 
-  private void whenQueried(Function<ObjectSet, List<Pair<Person, Address>>> func) {
-    this.result = func.apply(ObjectSet.of(Person.class, List.of(person1, person2))
-        .with(Address.class, List.of(address1, address2)));
+  private void whenQueried(BiFunction<List<Person>, List<Address>, List<Pair<Person, Address>>> func) {
+    List<Person> persons = List.of(person1, person2);
+    List<Address> addresses = List.of(address1, address2);
+    this.result = func.apply(persons, addresses);
   }
 }

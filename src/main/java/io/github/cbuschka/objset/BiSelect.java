@@ -8,15 +8,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface BiSelect<Element1, Element2> {
-    BiSelect<Element1, Element2> where(BiFunction<Element1, Element2, Boolean> condition);
 
-    <Element3, Key> TriSelect<Element1, Element2, Element3> join(Class<Element3> element3Type, BiFunction<Element1, Element2, Key> key1Func, Function<Element3, Key> key2Func);
+    <Element3, Key> TriSelect<Element1, Element2, Element3> join(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> key1Func, Function<Element3, Key> key2Func);
 
-    <Element3, Key> TriSelect<Element1, Element2, Element3> leftOuterJoin(Class<Element3> element3Type, BiFunction<Element1, Element2, Key> key1Func, Function<Element3, Key> key2Func);
+    <Element3, Key> TriSelect<Element1, Element2, Element3> leftOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> key1Func, Function<Element3, Key> key2Func);
 
-    <Element3, Key> TriSelect<Element1, Element2, Element3> rightOuterJoin(Class<Element3> element3Type, BiFunction<Element1, Element2, Key> key1Func, Function<Element3, Key> key2Func);
+    <Element3, Key> TriSelect<Element1, Element2, Element3> rightOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> key1Func, Function<Element3, Key> key2Func);
 
-    <Element3, Key> TriSelect<Element1, Element2, Element3> fullOuterJoin(Class<Element3> element3Type, BiFunction<Element1, Element2, Key> key1Func, Function<Element3, Key> key2Func);
+    <Element3, Key> TriSelect<Element1, Element2, Element3> fullOuterJoin(Iterable<Element3> element3s, BiFunction<Element1, Element2, Key> key1Func, Function<Element3, Key> key2Func);
 
     BiStream<Element1, Element2> stream();
 

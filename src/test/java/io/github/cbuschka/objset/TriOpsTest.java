@@ -35,19 +35,20 @@ public class TriOpsTest {
     givenPerson1WithTwoAddressesAndOrder();
     givenPerson2WithoutAddressesAndOrder();
 
-    whenQueried(objSet -> objSet.selectFrom(Person.class)
-        .join(Address.class, Person::getId, Address::getPersonId)
-        .join(Order.class, (person, address) -> person.getId(), Order::getPersonId)
+    whenQueried((persons, addresses, orders) -> ObjectQuery.selectFrom(persons)
+        .join(addresses, Person::getId, Address::getPersonId)
+        .join(orders, (person, address) -> person.getId(), Order::getPersonId)
         .toList());
 
     assertThat(result).containsExactly(Triple.of(person1, address1, order1),
         Triple.of(person1, address2, order1));
   }
 
-  private void whenQueried(Function<ObjectSet, List<Triple<Person, Address, Order>>> func) {
-    this.result = func.apply(ObjectSet.of(Person.class, List.of(person1, person2))
-        .with(Address.class, List.of(address1, address2))
-        .with(Order.class, List.of(order1)));
+  private void whenQueried(TriFunction<Iterable<Person>, Iterable<Address>, Iterable<Order>, List<Triple<Person, Address, Order>>> func) {
+    List<Person> persons = List.of(person1, person2);
+    List<Address> addresses = List.of(address1, address2);
+    List<Order> orders = List.of(order1);
+    this.result = func.apply(persons, addresses, orders);
   }
 
   private void givenPerson2WithoutAddressesAndOrder() {
@@ -66,9 +67,9 @@ public class TriOpsTest {
     givenPerson1WithTwoAddressesAndOrder();
     givenPerson2WithoutAddressesAndOrder();
 
-    whenQueried(objSet -> objSet.selectFrom(Person.class)
-        .join(Address.class, Person::getId, Address::getPersonId)
-        .join(Order.class, (person, address) -> person.getId(), Order::getPersonId)
+    whenQueried((persons, addresses, orders) -> ObjectQuery.selectFrom(persons)
+        .join(addresses, Person::getId, Address::getPersonId)
+        .join(orders, (person, address) -> person.getId(), Order::getPersonId)
         .where((i, s, ss) -> s != address2)
         .toList());
 

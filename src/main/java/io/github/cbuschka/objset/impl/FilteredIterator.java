@@ -3,17 +3,18 @@ package io.github.cbuschka.objset.impl;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class FilteredIterator<E> implements Iterator<E> {
     private final Iterator<E> source;
-    private final Function<E, Boolean> filter;
+    private final Predicate<E> filter;
     private Object[] buf;
 
-    public static <E> Iterable<E> filtered(Iterable<E> source, Function<E, Boolean> filter) {
+    public static <E> Iterable<E> filtered(Iterable<E> source, Predicate<E> filter) {
         return () -> new FilteredIterator<>(source.iterator(), filter);
     }
 
-    public FilteredIterator(Iterator<E> source, Function<E, Boolean> filter) {
+    public FilteredIterator(Iterator<E> source, Predicate<E> filter) {
         this.source = source;
         this.filter = filter;
     }
@@ -44,7 +45,7 @@ public class FilteredIterator<E> implements Iterator<E> {
             }
 
             E next = this.source.next();
-            if (filter.apply(next) == Boolean.TRUE) {
+            if (filter.test(next)) {
                 buf = new Object[]{next};
             }
         }
