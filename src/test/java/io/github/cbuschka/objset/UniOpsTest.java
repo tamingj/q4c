@@ -33,6 +33,16 @@ public class UniOpsTest {
     thenResultContainsAllPersons();
   }
 
+  @Test
+  void supportsDatasourceViaSupplier() {
+    givenAreTwoPersons();
+
+    whenQueried((persons) -> ObjectQuery.selectFrom(() -> persons)
+        .toList());
+
+    thenResultContainsAllPersons();
+  }
+
   private void thenResultContainsAllPersons() {
     assertThat(result).containsExactly(person1, person2);
   }
