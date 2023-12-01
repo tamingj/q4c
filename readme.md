@@ -1,7 +1,7 @@
 # q4c - queries for collections
 
 ## License
-Copyright (c) 2021-2023 by [Cornelius Buschka](https://github.com/cbuschka).
+Copyright (c) 2023 by the cbuschka/q4c maintainers.
 
-[Apache License, Version 2.0](./license.txt)
+[MIT License](./license.txt)
 
