@@ -1,4 +1,4 @@
-# objset - object set operations in java
+# q4c - queries for collections
 
 ## License
 Copyright (c) 2021-2023 by [Cornelius Buschka](https://github.com/cbuschka).
