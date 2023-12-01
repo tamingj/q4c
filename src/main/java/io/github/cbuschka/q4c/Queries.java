@@ -5,6 +5,10 @@ import io.github.cbuschka.q4c.impl.UniSelectImpl;
 import java.util.function.Supplier;
 
 public class Queries {
+    private Queries() {
+        // dont instantiate
+    }
+
     public static <Element1> FilterableUniSelect<Element1> selectFrom(Iterable<Element1> elements) {
         return new UniSelectImpl<>(elements);
     }
