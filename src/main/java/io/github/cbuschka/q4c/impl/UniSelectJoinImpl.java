@@ -1,8 +1,6 @@
 package io.github.cbuschka.q4c.impl;
 
-import io.github.cbuschka.q4c.FilterableBiSelect;
-import io.github.cbuschka.q4c.Pair;
-import io.github.cbuschka.q4c.UniSelectJoin;
+import io.github.cbuschka.q4c.*;
 import lombok.AllArgsConstructor;
 
 import java.util.function.Function;
@@ -15,7 +13,11 @@ class UniSelectJoinImpl<Element1, Element2> implements UniSelectJoin<Element1, E
 
     @Override
     public <Key> FilterableBiSelect<Element1, Element2> on(Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc) {
-        return new BiSelectImpl<>(JoinIterator.of(joinMode, elements, element1KeyFunc, element2s, element2KeyFunc, Pair::of));
+        return on(element1KeyFunc, element2KeyFunc, BiPredicates.matchAll());
+    }
 
+    @Override
+    public <Key> FilterableBiSelect<Element1, Element2> on(Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc, BiPredicate<Element1, Element2> condition) {
+        return new BiSelectImpl<>(JoinIterator.of(joinMode, elements, element1KeyFunc, element2s, element2KeyFunc, condition, Pair::of));
     }
 }

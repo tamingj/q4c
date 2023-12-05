@@ -86,6 +86,24 @@ class InnerJoinsTest {
         thenResultIs("a1:a2", "a1:a1", "a1:a3", "a2:a2", "a2:a1", "a2:a3");
     }
 
+    @Test
+    void twoWithThreeFiltered() {
+        givenLeft("b", "a1", "a2", "c");
+        givenRight("a2", "a1", "d", "a3", "e");
+
+        whenInnerJoinedAndFilteredForEvenSum();
+
+        thenResultIs("a1:a1", "a1:a3", "a2:a2");
+    }
+
+    private void whenInnerJoinedAndFilteredForEvenSum() {
+        this.result = toList(JoinIterator.forInnerJoin(left, s -> s.charAt(0), right, s1 -> s1.charAt(0), InnerJoinsTest::hasEvenSum, Pair::of));
+    }
+
+    private static boolean hasEvenSum(String a, String b) {
+        return (Integer.parseInt(a.substring(1, 2)) + Integer.parseInt(b.substring(1, 2))) % 2 == 0;
+    }
+
     private void thenResultIs(String... expectedElements) {
         assertThat(result).containsExactly(expectedElements);
     }
@@ -95,13 +113,13 @@ class InnerJoinsTest {
     }
 
     private void whenInnerJoined() {
-        this.result = toList(JoinIterator.forInnerJoin(left, s -> s.charAt(0), right, s1 -> s1.charAt(0), Pair::of));
+        this.result = toList(JoinIterator.forInnerJoin(left, s -> s.charAt(0), right, s1 -> s1.charAt(0), BiPredicates.matchAll(), Pair::of));
     }
 
     private List<String> toList(Iterable<Pair<String, String>> tuples) {
         return StreamSupport.stream(tuples.spliterator(), false)
                 .map(t -> t.element1() + ":" + t.element2())
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
     private void givenLeft(String... left) {

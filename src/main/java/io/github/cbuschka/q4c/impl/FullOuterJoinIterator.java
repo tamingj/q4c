@@ -1,5 +1,7 @@
 package io.github.cbuschka.q4c.impl;
 
+import io.github.cbuschka.q4c.BiPredicate;
+
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -7,8 +9,8 @@ import java.util.function.Function;
 public class FullOuterJoinIterator<Left, Right, Key, Result> extends JoinIterator<Left, Right, Key, Result> {
     private final Iterator<Map.Entry<Key, CombinedElements<Left, Right>>> combinedElementsIter;
 
-    public FullOuterJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> rights, Function<Right, Key> rightKeyFunc, BiFunction<Left, Right, Result> resultMapFunc) {
-        super(resultMapFunc);
+    public FullOuterJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> rights, Function<Right, Key> rightKeyFunc, BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunc) {
+        super(condition, resultMapFunc);
 
         var combinedElementsByKeyMap = index(lefts.iterator(), leftKeyFunc, rights.iterator(), rightKeyFunc);
         combinedElementsIter = combinedElementsByKeyMap.entrySet().iterator();
@@ -44,16 +46,16 @@ public class FullOuterJoinIterator<Left, Right, Key, Result> extends JoinIterato
         CombinedElements<Left, Right> combinedElements = combinedElementsEntry.getValue();
         if (combinedElements.lefts.isEmpty()) {
             for (Right right : combinedElements.rights) {
-                addToBuffer(null, right);
+                addToBufferIfMatchesCondition(null, right);
             }
         } else if (combinedElements.rights.isEmpty()) {
             for (Left left : combinedElements.lefts) {
-                addToBuffer(left, null);
+                addToBufferIfMatchesCondition(left, null);
             }
         } else {
             for (Left left : combinedElements.lefts) {
                 for (Right right : combinedElements.rights) {
-                    addToBuffer(left, right);
+                    addToBufferIfMatchesCondition(left, right);
                 }
             }
         }

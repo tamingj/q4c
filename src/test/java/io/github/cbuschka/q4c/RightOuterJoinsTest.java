@@ -56,6 +56,16 @@ class RightOuterJoinsTest {
     }
 
     @Test
+    void twoWithThreeFiltered() {
+        givenLeft("a1", "a2", "b", "c");
+        givenRight("a2", "a1", "d", "a3", "e");
+
+        whenRightOuterJoinedAndFilteredForEvenSum();
+
+        thenResultIs("a2:a2", "a1:a1", "null:d", "a1:a3", "null:e");
+    }
+
+    @Test
     void leftEmpty() {
         givenLeft();
         givenRight("a1");
@@ -84,7 +94,7 @@ class RightOuterJoinsTest {
     }
 
     private void whenRightOuterJoined() {
-        this.result = toList(JoinIterator.forRightOuterJoin(left, s -> s.charAt(0), right, s1 -> s1.charAt(0), Pair::of));
+        this.result = toList(JoinIterator.forRightOuterJoin(left, s -> s.charAt(0), right, s1 -> s1.charAt(0), BiPredicates.matchAll(), Pair::of));
     }
 
     private List<String> toList(Iterable<Pair<String, String>> tuples) {
@@ -99,5 +109,13 @@ class RightOuterJoinsTest {
 
     private void givenRight(String... right) {
         this.right = Arrays.asList(right);
+    }
+
+    private void whenRightOuterJoinedAndFilteredForEvenSum() {
+        this.result = toList(JoinIterator.forRightOuterJoin(left, s -> s.charAt(0), right, s1 -> s1.charAt(0), RightOuterJoinsTest::hasEvenSum, Pair::of));
+    }
+
+    private static boolean hasEvenSum(String a, String b) {
+        return a == null || b == null || (a.length() >= 2 && b.length() >= 2 && (Integer.parseInt(a.substring(1, 2)) + Integer.parseInt(b.substring(1, 2))) % 2 == 0);
     }
 }

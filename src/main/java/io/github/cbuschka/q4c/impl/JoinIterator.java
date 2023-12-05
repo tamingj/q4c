@@ -1,5 +1,8 @@
 package io.github.cbuschka.q4c.impl;
 
+import io.github.cbuschka.q4c.BiPredicate;
+import io.github.cbuschka.q4c.BiPredicates;
+
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -8,41 +11,43 @@ import java.util.stream.StreamSupport;
 
 public abstract class JoinIterator<Left, Right, Key, Result> implements Iterator<Result> {
 
+    private BiPredicate<Left, Right> condition;
     private final BiFunction<Left, Right, Result> resultMapFunction;
     private final List<Result> buffer = new LinkedList<>();
 
-    public static <Left, Right, Key, Result> Iterable<Result> of(JoinMode joinMode, Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
+    public static <Left, Right, Key, Result> Iterable<Result> of(JoinMode joinMode, Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunction) {
         switch (joinMode) {
             case INNER:
-                return forInnerJoin(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+                return forInnerJoin(lefts, leftKeyFunction, rights, rightKeyFunction, condition, resultMapFunction);
             case FULL_OUTER:
-                return forFullOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+                return forFullOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, condition, resultMapFunction);
             case LEFT_OUTER:
-                return forLeftOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+                return forLeftOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, condition, resultMapFunction);
             case RIGHT_OUTER:
-                return forRightOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+                return forRightOuterJoin(lefts, leftKeyFunction, rights, rightKeyFunction, condition, resultMapFunction);
             default:
                 throw new IllegalArgumentException("Invalid join mode: " + joinMode + ".");
         }
     }
 
-    public static <Left, Right, Key, Result> Iterable<Result> forFullOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
-        return () -> new FullOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+    public static <Left, Right, Key, Result> Iterable<Result> forFullOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunction) {
+        return () -> new FullOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, condition, resultMapFunction);
     }
 
-    public static <Left, Right, Key, Result> Iterable<Result> forRightOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
-        return () -> new RightOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+    public static <Left, Right, Key, Result> Iterable<Result> forRightOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunction) {
+        return () -> new RightOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, condition, resultMapFunction);
     }
 
-    public static <Left, Right, Key, Result> Iterable<Result> forLeftOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
-        return () -> new LeftOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+    public static <Left, Right, Key, Result> Iterable<Result> forLeftOuterJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunction) {
+        return () -> new LeftOuterJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, condition, resultMapFunction);
     }
 
-    public static <Left, Right, Key, Result> Iterable<Result> forInnerJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiFunction<Left, Right, Result> resultMapFunction) {
-        return () -> new InnerJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, resultMapFunction);
+    public static <Left, Right, Key, Result> Iterable<Result> forInnerJoin(Iterable<Left> lefts, Function<Left, Key> leftKeyFunction, Iterable<Right> rights, Function<Right, Key> rightKeyFunction, BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunction) {
+        return () -> new InnerJoinIterator<>(lefts, leftKeyFunction, rights, rightKeyFunction, condition, resultMapFunction);
     }
 
-    protected JoinIterator(BiFunction<Left, Right, Result> resultMapFunction) {
+    protected JoinIterator(BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunction) {
+        this.condition = condition;
         this.resultMapFunction = resultMapFunction;
     }
 
@@ -84,7 +89,17 @@ public abstract class JoinIterator<Left, Right, Key, Result> implements Iterator
         return elementsByKey;
     }
 
+    protected boolean matchesCondition(Left left, Right right) {
+        return condition.test(left, right);
+    }
+
     protected abstract boolean fill();
+
+    protected void addToBufferIfMatchesCondition(Left left, Right right) {
+        if( matchesCondition(left, right) ) {
+            addToBuffer(left, right);
+        }
+    }
 
     protected void addToBuffer(Left left, Right right) {
         Result entryToAdd = resultMapFunction.apply(left, right);

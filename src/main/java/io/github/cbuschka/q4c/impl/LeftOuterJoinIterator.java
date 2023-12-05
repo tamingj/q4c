@@ -1,5 +1,7 @@
 package io.github.cbuschka.q4c.impl;
 
+import io.github.cbuschka.q4c.BiPredicate;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -12,8 +14,8 @@ public class LeftOuterJoinIterator<Left, Right, Key, Result> extends JoinIterato
     private final Function<Left, Key> leftKeyFunc;
     private final Map<Key, List<Right>> rightsByKey;
 
-    public LeftOuterJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> element2s, Function<Right, Key> element2KeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
-        super(resultMapFunction);
+    public LeftOuterJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> element2s, Function<Right, Key> element2KeyFunc, BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunction) {
+        super(condition, resultMapFunction);
         this.lefts = lefts.iterator();
         this.leftKeyFunc = leftKeyFunc;
         this.rightsByKey = getElementsByKeyMap(element2s, element2KeyFunc);
@@ -29,10 +31,10 @@ public class LeftOuterJoinIterator<Left, Right, Key, Result> extends JoinIterato
         Key key = leftKeyFunc.apply(left);
         List<Right> rights = rightsByKey.getOrDefault(key, Collections.emptyList());
         if (rights.isEmpty()) {
-            addToBuffer(left, null);
+            addToBufferIfMatchesCondition(left, null);
         } else {
             for (Right right : rights) {
-                addToBuffer(left, right);
+                addToBufferIfMatchesCondition(left, right);
             }
         }
 

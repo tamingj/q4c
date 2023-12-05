@@ -1,5 +1,7 @@
 package io.github.cbuschka.q4c.impl;
 
+import io.github.cbuschka.q4c.BiPredicate;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -12,8 +14,8 @@ public class InnerJoinIterator<Left, Right, Key, Result> extends JoinIterator<Le
     private final Function<Left, Key> leftKeyFunc;
     private final Map<Key, List<Right>> rights;
 
-    public InnerJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> rights, Function<Right, Key> rightKeyFunc, BiFunction<Left, Right, Result> resultMapFunction) {
-        super(resultMapFunction);
+    public InnerJoinIterator(Iterable<Left> lefts, Function<Left, Key> leftKeyFunc, Iterable<Right> rights, Function<Right, Key> rightKeyFunc, BiPredicate<Left, Right> condition, BiFunction<Left, Right, Result> resultMapFunction) {
+        super(condition, resultMapFunction);
         this.lefts = lefts.iterator();
         this.leftKeyFunc = leftKeyFunc;
         this.rights = getElementsByKeyMap(rights, rightKeyFunc);
@@ -29,7 +31,7 @@ public class InnerJoinIterator<Left, Right, Key, Result> extends JoinIterator<Le
         Key key = leftKeyFunc.apply(left);
         List<Right> rights = this.rights.getOrDefault(key, Collections.emptyList());
         for (Right right : rights) {
-            addToBuffer(left, right);
+            addToBufferIfMatchesCondition(left, right);
         }
 
         return true;
