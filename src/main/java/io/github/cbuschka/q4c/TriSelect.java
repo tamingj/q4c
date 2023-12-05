@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public interface TriSelect<Element1, Element2, Element3> {
+public interface TriSelect<Element1, Element2, Element3> extends Iterable<Triple<Element1, Element2, Element3>> {
     TriSelect<Element1, Element2, Element3> where(TriFunction<Element1, Element2, Element3, Boolean> condition);
 
     TriStream<Element1, Element2, Element3> stream();
@@ -20,7 +20,7 @@ public interface TriSelect<Element1, Element2, Element3> {
         stream().forEach(consumer);
     }
 
-    default void forEach(Consumer<Triple<Element1, Element2, Element3>> consumer) {
+    default void forEach(Consumer<? super Triple<Element1, Element2, Element3>> consumer) {
         tripleStream().forEach(consumer);
     }
 }

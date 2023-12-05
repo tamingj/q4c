@@ -4,6 +4,7 @@ import io.github.cbuschka.q4c.FilterableUniSelect;
 import io.github.cbuschka.q4c.UniSelect;
 import io.github.cbuschka.q4c.UniSelectJoin;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -43,5 +44,10 @@ public class UniSelectImpl<Element1> implements FilterableUniSelect<Element1> {
     @Override
     public Stream<Element1> stream() {
         return StreamSupport.stream(elements.spliterator(), false);
+    }
+
+    @Override
+    public Iterator<Element1> iterator() {
+        return elements.iterator();
     }
 }

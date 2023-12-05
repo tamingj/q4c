@@ -2,6 +2,7 @@ package io.github.cbuschka.q4c.impl;
 
 import io.github.cbuschka.q4c.*;
 
+import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -45,5 +46,10 @@ public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Elem
     @Override
     public <Element3> BiSelectJoin<Element1, Element2, Element3> fullOuterJoin(Iterable<Element3> element3s) {
         return new BiSelectJoinImpl<>(JoinMode.FULL_OUTER, source, element3s);
+    }
+
+    @Override
+    public Iterator<Pair<Element1, Element2>> iterator() {
+        return source.iterator();
     }
 }

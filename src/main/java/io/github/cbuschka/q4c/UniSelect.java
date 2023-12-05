@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public interface UniSelect<Element1> {
+public interface UniSelect<Element1> extends Iterable<Element1> {
     <Element2> UniSelectJoin<Element1, Element2> join(Iterable<Element2> element2s);
     <Element2> UniSelectJoin<Element1, Element2> leftOuterJoin(Iterable<Element2> element2s);
     <Element2> UniSelectJoin<Element1, Element2> rightOuterJoin(Iterable<Element2> element2s);
@@ -13,7 +13,7 @@ public interface UniSelect<Element1> {
 
     Stream<Element1> stream();
 
-    default void forEach(Consumer<Element1> consumer) {
+    default void forEach(Consumer<? super Element1> consumer) {
         stream().forEach(consumer);
     }
 

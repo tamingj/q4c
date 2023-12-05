@@ -2,6 +2,7 @@ package io.github.cbuschka.q4c.impl;
 
 import io.github.cbuschka.q4c.*;
 
+import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -25,5 +26,10 @@ public class TriSelectImpl<Element1, Element2, Element3> implements FilterableTr
     @Override
     public TriStream<Element1, Element2, Element3> stream() {
         return new TriStreamImpl<>(tripleStream());
+    }
+
+    @Override
+    public Iterator<Triple<Element1, Element2, Element3>> iterator() {
+        return source.iterator();
     }
 }

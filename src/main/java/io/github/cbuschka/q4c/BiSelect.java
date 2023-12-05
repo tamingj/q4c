@@ -5,7 +5,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public interface BiSelect<Element1, Element2> {
+public interface BiSelect<Element1, Element2> extends Iterable<Pair<Element1, Element2>> {
 
     <Element3> BiSelectJoin<Element1, Element2, Element3> join(Iterable<Element3> element3s);
     <Element3> BiSelectJoin<Element1, Element2, Element3> leftOuterJoin(Iterable<Element3> element3s);
