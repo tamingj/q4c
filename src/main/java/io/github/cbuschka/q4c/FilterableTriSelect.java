@@ -1,6 +1,6 @@
 package io.github.cbuschka.q4c;
 
-public interface FilterableTriSelect<Element1, Element2, Element3> extends TriSelect<Element1, Element2, Element3> {
-    TriSelect<Element1, Element2, Element3> where(TriPredicate<Element1, Element2, Element3> condition);
+public interface FilterableTriSelect<E1, E2, E3> extends TriSelect<E1, E2, E3> {
+    TriSelect<E1, E2, E3> where(TriPredicate<E1, E2, E3> condition);
 }
 

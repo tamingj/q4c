@@ -7,26 +7,26 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Triple<Element1, Element2, Element3> {
+public class Triple<E1, E2, E3> {
 
-  private final Element1 element1;
-  private final Element2 element2;
-  private final Element3 element3;
+  private final E1 element1;
+  private final E2 element2;
+  private final E3 element3;
 
-  public static <Element1, Element2, Element3> Triple<Element1, Element2, Element3> of(
-      Element1 element1, Element2 element2, Element3 element3) {
+  public static <E1, E2, E3> Triple<E1, E2, E3> of(
+      E1 element1, E2 element2, E3 element3) {
     return new Triple<>(element1, element2, element3);
   }
 
-  public Element1 element1() {
+  public E1 element1() {
     return element1;
   }
 
-  public Element2 element2() {
+  public E2 element2() {
     return element2;
   }
 
-  public Element3 element3() {
+  public E3 element3() {
     return element3;
   }
 }

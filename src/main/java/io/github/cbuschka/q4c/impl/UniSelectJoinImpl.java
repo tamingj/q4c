@@ -6,18 +6,18 @@ import lombok.AllArgsConstructor;
 import java.util.function.Function;
 
 @AllArgsConstructor
-class UniSelectJoinImpl<Element1, Element2> implements UniSelectJoin<Element1, Element2> {
+class UniSelectJoinImpl<E1, E2> implements UniSelectJoin<E1, E2> {
     private final JoinMode joinMode;
-    private final Iterable<Element1> elements;
-    private final Iterable<Element2> element2s;
+    private final Iterable<E1> elements;
+    private final Iterable<E2> element2s;
 
     @Override
-    public <Key> FilterableBiSelect<Element1, Element2> on(Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc) {
+    public <Key> FilterableBiSelect<E1, E2> on(Function<E1, Key> element1KeyFunc, Function<E2, Key> element2KeyFunc) {
         return on(element1KeyFunc, element2KeyFunc, BiPredicates.matchAll());
     }
 
     @Override
-    public <Key> FilterableBiSelect<Element1, Element2> on(Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc, BiPredicate<Element1, Element2> condition) {
+    public <Key> FilterableBiSelect<E1, E2> on(Function<E1, Key> element1KeyFunc, Function<E2, Key> element2KeyFunc, BiPredicate<E1, E2> condition) {
         return new BiSelectImpl<>(JoinIterator.of(joinMode, elements, element1KeyFunc, element2s, element2KeyFunc, condition, Pair::of));
     }
 }

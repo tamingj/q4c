@@ -7,19 +7,19 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Pair<Element1, Element2> {
-    private final Element1 element1;
-    private final Element2 element2;
+public class Pair<E1, E2> {
+    private final E1 element1;
+    private final E2 element2;
 
-    public static <Element1, Element2> Pair<Element1, Element2> of(Element1 element1, Element2 element2) {
+    public static <E1, E2> Pair<E1, E2> of(E1 element1, E2 element2) {
         return new Pair<>(element1, element2);
     }
 
-    public Element1 element1() {
+    public E1 element1() {
         return element1;
     }
 
-    public Element2 element2() {
+    public E2 element2() {
         return element2;
     }
 }

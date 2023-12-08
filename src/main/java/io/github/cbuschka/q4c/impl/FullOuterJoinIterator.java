@@ -63,8 +63,8 @@ public class FullOuterJoinIterator<Left, Right, Key, Result> extends JoinIterato
         return true;
     }
 
-    private static class CombinedElements<Element1, Element2> {
-        private final List<Element1> lefts = new ArrayList<>();
-        private final List<Element2> rights = new ArrayList<>();
+    private static class CombinedElements<E1, E2> {
+        private final List<E1> lefts = new ArrayList<>();
+        private final List<E2> rights = new ArrayList<>();
     }
 }

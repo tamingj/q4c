@@ -11,24 +11,24 @@ public class Queries {
         // dont instantiate
     }
 
-    public static <Element1> FilterableUniSelect<Element1> selectFrom(Iterable<Element1> elements) {
+    public static <E1> FilterableUniSelect<E1> selectFrom(Iterable<E1> elements) {
         return new UniSelectImpl<>(elements);
     }
 
 
-    public static <Element1> FilterableUniSelect<Element1> selectFrom(UniSelect<Element1> subselect) {
+    public static <E1> FilterableUniSelect<E1> selectFrom(UniSelect<E1> subselect) {
         return new UniSelectImpl<>(subselect);
     }
 
-    public static <Element1, Element2> FilterableBiSelect<Element1, Element2> selectFrom(BiSelect<Element1, Element2> subselect) {
+    public static <E1, E2> FilterableBiSelect<E1, E2> selectFrom(BiSelect<E1, E2> subselect) {
         return new BiSelectImpl<>(subselect);
     }
 
-    public static <Element1, Element2, Element3> FilterableTriSelect<Element1, Element2, Element3> selectFrom(TriSelect<Element1, Element2, Element3> subselect) {
+    public static <E1, E2, E3> FilterableTriSelect<E1, E2, E3> selectFrom(TriSelect<E1, E2, E3> subselect) {
         return new TriSelectImpl<>(subselect);
     }
 
-    public static <Element1> FilterableUniSelect<Element1> selectFrom(Supplier<Iterable<Element1>> elements) {
+    public static <E1> FilterableUniSelect<E1> selectFrom(Supplier<Iterable<E1>> elements) {
         return new UniSelectImpl<>(elements.get());
     }
 }

@@ -2,12 +2,12 @@ package io.github.cbuschka.q4c;
 
 import java.util.stream.Stream;
 
-public interface TriStream<Element1, Element2, Element3> {
-    void forEach(TriConsumer<Element1, Element2, Element3> consumer);
+public interface TriStream<E1, E2, E3> {
+    void forEach(TriConsumer<E1, E2, E3> consumer);
 
-    <Result> Stream<Result> map(TriFunction<Element1, Element2, Element3, Result> mapper);
+    <Result> Stream<Result> map(TriFunction<E1, E2, E3, Result> mapper);
 
-    TriStream<Element1, Element2, Element3> filter(TriPredicate<Element1, Element2, Element3> condition);
+    TriStream<E1, E2, E3> filter(TriPredicate<E1, E2, E3> condition);
 
-    TriStream<Element1, Element2, Element3> peek(TriConsumer<Element1, Element2, Element3> consumer);
+    TriStream<E1, E2, E3> peek(TriConsumer<E1, E2, E3> consumer);
 }

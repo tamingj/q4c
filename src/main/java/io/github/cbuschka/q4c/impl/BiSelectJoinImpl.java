@@ -7,18 +7,18 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @AllArgsConstructor
-class BiSelectJoinImpl<Element1, Element2, Element3> implements BiSelectJoin<Element1, Element2, Element3> {
+class BiSelectJoinImpl<E1, E2, E3> implements BiSelectJoin<E1, E2, E3> {
     private final JoinMode joinMode;
-    private final Iterable<Pair<Element1, Element2>> source;
-    private final Iterable<Element3> element3s;
+    private final Iterable<Pair<E1, E2>> source;
+    private final Iterable<E3> element3s;
 
     @Override
-    public <Key> FilterableTriSelect<Element1, Element2, Element3> on(BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc) {
+    public <Key> FilterableTriSelect<E1, E2, E3> on(BiFunction<E1, E2, Key> element1And2KeyFunc, Function<E3, Key> element3KeyFunc) {
         return on(element1And2KeyFunc, element3KeyFunc, TriPredicates.matchAll());
     }
 
     @Override
-    public <Key> FilterableTriSelect<Element1, Element2, Element3> on(BiFunction<Element1, Element2, Key> element1And2KeyFunc, Function<Element3, Key> element3KeyFunc, TriPredicate<Element1, Element2, Element3> condition) {
+    public <Key> FilterableTriSelect<E1, E2, E3> on(BiFunction<E1, E2, Key> element1And2KeyFunc, Function<E3, Key> element3KeyFunc, TriPredicate<E1, E2, E3> condition) {
         return new TriSelectImpl<>(JoinIterator.of(joinMode, source, (t) -> element1And2KeyFunc.apply(t.element1(), t.element2()), element3s, element3KeyFunc, (left, right) -> condition.test(left.element1(), left.element2(), right), (left, right) -> Triple.of(left.element1(), left.element2(), right)));
     }
 }

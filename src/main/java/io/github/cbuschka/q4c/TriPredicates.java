@@ -4,7 +4,7 @@ public class TriPredicates {
     private TriPredicates() {
     }
 
-    public static <Element1, Element2, Element3> TriPredicate<Element1, Element2, Element3> matchAll() {
+    public static <E1, E2, E3> TriPredicate<E1, E2, E3> matchAll() {
         return (a, b, c) -> true;
     }
 }

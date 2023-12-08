@@ -9,45 +9,45 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class QuadriSelectImpl<Element1, Element2, Element3, Element4> implements FilterableQuadriSelect<Element1, Element2, Element3, Element4> {
-    private final Iterable<Quadruple<Element1, Element2, Element3, Element4>> source;
+public class QuadriSelectImpl<E1, E2, E3, E4> implements FilterableQuadriSelect<E1, E2, E3, E4> {
+    private final Iterable<Quadruple<E1, E2, E3, E4>> source;
 
-    public QuadriSelectImpl(Iterable<Quadruple<Element1, Element2, Element3, Element4>> source) {
+    public QuadriSelectImpl(Iterable<Quadruple<E1, E2, E3, E4>> source) {
         this.source = source;
     }
 
     @Override
-    public QuadriSelect<Element1, Element2, Element3, Element4> where(QuadriPredicate<Element1, Element2, Element3, Element4> condition) {
+    public QuadriSelect<E1, E2, E3, E4> where(QuadriPredicate<E1, E2, E3, E4> condition) {
         return new QuadriSelectImpl<>(FilteredIterator.filtered(source, (t) -> condition.test(t.element1(), t.element2(), t.element3(), t.element4())));
     }
 
     @Override
-    public Stream<Quadruple<Element1, Element2, Element3, Element4>> quadrupleStream() {
+    public Stream<Quadruple<E1, E2, E3, E4>> quadrupleStream() {
         return StreamSupport.stream(source.spliterator(), false);
     }
 
     @Override
-    public QuadriStream<Element1, Element2, Element3, Element4> stream() {
+    public QuadriStream<E1, E2, E3, E4> stream() {
         return new QuadriStreamImpl<>(quadrupleStream());
     }
 
     @Override
-    public Iterator<Quadruple<Element1, Element2, Element3, Element4>> iterator() {
+    public Iterator<Quadruple<E1, E2, E3, E4>> iterator() {
         return source.iterator();
     }
 
     @Override
-    public List<Quadruple<Element1, Element2, Element3, Element4>> toList() {
+    public List<Quadruple<E1, E2, E3, E4>> toList() {
         return quadrupleStream().collect(Collectors.toList());
     }
 
     @Override
-    public void forEach(QuadriConsumer<Element1, Element2, Element3, Element4> consumer) {
+    public void forEach(QuadriConsumer<E1, E2, E3, E4> consumer) {
         stream().forEach(consumer);
     }
 
     @Override
-    public void forEach(Consumer<? super Quadruple<Element1, Element2, Element3, Element4>> consumer) {
+    public void forEach(Consumer<? super Quadruple<E1, E2, E3, E4>> consumer) {
         quadrupleStream().forEach(consumer);
     }
 }

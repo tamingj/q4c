@@ -2,12 +2,12 @@ package io.github.cbuschka.q4c;
 
 import java.util.stream.Stream;
 
-public interface QuadriStream<Element1, Element2, Element3, Element4> {
-    void forEach(QuadriConsumer<Element1, Element2, Element3, Element4> consumer);
+public interface QuadriStream<E1, E2, E3, E4> {
+    void forEach(QuadriConsumer<E1, E2, E3, E4> consumer);
 
-    <Result> Stream<Result> map(QuadriFunction<Element1, Element2, Element3, Element4, Result> mapper);
+    <Result> Stream<Result> map(QuadriFunction<E1, E2, E3, E4, Result> mapper);
 
-    QuadriStream<Element1, Element2, Element3, Element4> filter(QuadriPredicate<Element1, Element2, Element3, Element4> condition);
+    QuadriStream<E1, E2, E3, E4> filter(QuadriPredicate<E1, E2, E3, E4> condition);
 
-    QuadriStream<Element1, Element2, Element3, Element4> peek(QuadriConsumer<Element1, Element2, Element3, Element4> consumer);
+    QuadriStream<E1, E2, E3, E4> peek(QuadriConsumer<E1, E2, E3, E4> consumer);
 }

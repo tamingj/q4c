@@ -12,55 +12,55 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class UniSelectImpl<Element1> implements FilterableUniSelect<Element1> {
-    private final Iterable<Element1> elements;
+public class UniSelectImpl<E1> implements FilterableUniSelect<E1> {
+    private final Iterable<E1> elements;
 
-    public UniSelectImpl(Iterable<Element1> elements) {
+    public UniSelectImpl(Iterable<E1> elements) {
         this.elements = elements;
     }
 
     @Override
-    public <Element2> UniSelectJoin<Element1, Element2> join(Iterable<Element2> element2s) {
+    public <E2> UniSelectJoin<E1, E2> join(Iterable<E2> element2s) {
         return new UniSelectJoinImpl<>(JoinMode.INNER, elements, element2s);
     }
 
     @Override
-    public <Element2> UniSelectJoin<Element1, Element2> leftOuterJoin(Iterable<Element2> element2s) {
+    public <E2> UniSelectJoin<E1, E2> leftOuterJoin(Iterable<E2> element2s) {
         return new UniSelectJoinImpl<>(JoinMode.LEFT_OUTER, elements, element2s);
     }
 
     @Override
-    public <Element2> UniSelectJoin<Element1, Element2> rightOuterJoin(Iterable<Element2> element2s) {
+    public <E2> UniSelectJoin<E1, E2> rightOuterJoin(Iterable<E2> element2s) {
         return new UniSelectJoinImpl<>(JoinMode.RIGHT_OUTER, elements, element2s);
     }
 
     @Override
-    public <Element2> UniSelectJoin<Element1, Element2> fullOuterJoin(Iterable<Element2> element2s) {
+    public <E2> UniSelectJoin<E1, E2> fullOuterJoin(Iterable<E2> element2s) {
         return new UniSelectJoinImpl<>(JoinMode.FULL_OUTER, elements, element2s);
     }
 
     @Override
-    public UniSelect<Element1> where(Predicate<Element1> condition) {
+    public UniSelect<E1> where(Predicate<E1> condition) {
         return new UniSelectImpl<>(FilteredIterator.filtered(this.elements, condition));
     }
 
     @Override
-    public Stream<Element1> stream() {
+    public Stream<E1> stream() {
         return StreamSupport.stream(elements.spliterator(), false);
     }
 
     @Override
-    public Iterator<Element1> iterator() {
+    public Iterator<E1> iterator() {
         return elements.iterator();
     }
 
     @Override
-    public void forEach(Consumer<? super Element1> consumer) {
+    public void forEach(Consumer<? super E1> consumer) {
         stream().forEach(consumer);
     }
 
     @Override
-    public List<Element1> toList() {
+    public List<E1> toList() {
         return stream().collect(Collectors.toList());
     }
 }

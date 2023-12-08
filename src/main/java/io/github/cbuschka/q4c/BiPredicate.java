@@ -1,7 +1,7 @@
 package io.github.cbuschka.q4c;
 
 @FunctionalInterface
-public interface BiPredicate<Element1, Element2> {
+public interface BiPredicate<E1, E2> {
 
-    boolean test(Element1 element1, Element2 element2);
+    boolean test(E1 element1, E2 element2);
 }

@@ -2,9 +2,9 @@ package io.github.cbuschka.q4c;
 
 import java.util.function.Function;
 
-public interface UniSelectJoin<Element1, Element2> {
-    <Key> FilterableBiSelect<Element1, Element2> on(Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc);
+public interface UniSelectJoin<E1, E2> {
+    <Key> FilterableBiSelect<E1, E2> on(Function<E1, Key> element1KeyFunc, Function<E2, Key> element2KeyFunc);
 
-    <Key> FilterableBiSelect<Element1, Element2> on(Function<Element1, Key> element1KeyFunc, Function<Element2, Key> element2KeyFunc,
-                                                    BiPredicate<Element1, Element2> condition);
+    <Key> FilterableBiSelect<E1, E2> on(Function<E1, Key> element1KeyFunc, Function<E2, Key> element2KeyFunc,
+                                                    BiPredicate<E1, E2> condition);
 }

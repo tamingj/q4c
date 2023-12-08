@@ -5,19 +5,19 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public interface UniSelect<Element1> extends Iterable<Element1> {
-    <Element2> UniSelectJoin<Element1, Element2> join(Iterable<Element2> element2s);
+public interface UniSelect<E1> extends Iterable<E1> {
+    <E2> UniSelectJoin<E1, E2> join(Iterable<E2> element2s);
 
-    <Element2> UniSelectJoin<Element1, Element2> leftOuterJoin(Iterable<Element2> element2s);
+    <E2> UniSelectJoin<E1, E2> leftOuterJoin(Iterable<E2> element2s);
 
-    <Element2> UniSelectJoin<Element1, Element2> rightOuterJoin(Iterable<Element2> element2s);
+    <E2> UniSelectJoin<E1, E2> rightOuterJoin(Iterable<E2> element2s);
 
-    <Element2> UniSelectJoin<Element1, Element2> fullOuterJoin(Iterable<Element2> element2s);
+    <E2> UniSelectJoin<E1, E2> fullOuterJoin(Iterable<E2> element2s);
 
-    Stream<Element1> stream();
+    Stream<E1> stream();
 
-    void forEach(Consumer<? super Element1> consumer);
+    void forEach(Consumer<? super E1> consumer);
 
-    List<Element1> toList();
+    List<E1> toList();
 }
 

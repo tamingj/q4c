@@ -1,6 +1,6 @@
 package io.github.cbuschka.q4c;
 
 @FunctionalInterface
-public interface QuadriConsumer<T, U, V, W> {
-    void accept(T t, U u, V v, W w);
+public interface QuadriConsumer<E1, E2, E3, E4> {
+    void accept(E1 element1, E2 element2, E3 element3, E4 element4);
 }

@@ -9,35 +9,35 @@ import io.github.cbuschka.q4c.Triple;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-class TriStreamImpl<Element1, Element2, Element3> implements TriStream<Element1, Element2, Element3> {
-    private final Stream<Triple<Element1, Element2, Element3>> source;
+class TriStreamImpl<E1, E2, E3> implements TriStream<E1, E2, E3> {
+    private final Stream<Triple<E1, E2, E3>> source;
 
-    public TriStreamImpl(Stream<Triple<Element1, Element2, Element3>> source) {
+    public TriStreamImpl(Stream<Triple<E1, E2, E3>> source) {
         this.source = source;
     }
 
-    public Stream<Triple<Element1, Element2, Element3>> tripleStream() {
+    public Stream<Triple<E1, E2, E3>> tripleStream() {
         return StreamSupport.stream(source.spliterator(), false);
     }
 
     @Override
-    public void forEach(TriConsumer<Element1, Element2, Element3> consumer) {
+    public void forEach(TriConsumer<E1, E2, E3> consumer) {
         tripleStream()
                 .forEach((t) -> consumer.accept(t.element1(), t.element2(), t.element3()));
     }
 
     @Override
-    public <Result> Stream<Result> map(TriFunction<Element1, Element2, Element3, Result> mapper) {
+    public <Result> Stream<Result> map(TriFunction<E1, E2, E3, Result> mapper) {
         return tripleStream().map((t) -> mapper.apply(t.element1(), t.element2(), t.element3()));
     }
 
     @Override
-    public TriStream<Element1, Element2, Element3> filter(TriPredicate<Element1, Element2, Element3> condition) {
+    public TriStream<E1, E2, E3> filter(TriPredicate<E1, E2, E3> condition) {
         return new TriStreamImpl<>(source.filter(pair -> condition.test(pair.element1(), pair.element2(), pair.element3())));
     }
 
     @Override
-    public TriStream<Element1, Element2, Element3> peek(TriConsumer<Element1, Element2, Element3> consumer) {
+    public TriStream<E1, E2, E3> peek(TriConsumer<E1, E2, E3> consumer) {
         return new TriStreamImpl<>(source.peek(pair -> consumer.accept(pair.element1(), pair.element2(), pair.element3())));
     }
 }

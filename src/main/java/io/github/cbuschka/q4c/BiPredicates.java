@@ -4,7 +4,7 @@ public class BiPredicates {
     private BiPredicates() {
     }
 
-    public static <Element1, Element2> BiPredicate<Element1, Element2> matchAll() {
+    public static <E1, E2> BiPredicate<E1, E2> matchAll() {
         return (a, b) -> true;
     }
 }

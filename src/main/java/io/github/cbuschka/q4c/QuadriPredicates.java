@@ -4,7 +4,7 @@ public class QuadriPredicates {
     private QuadriPredicates() {
     }
 
-    public static <Element1, Element2, Element3, Element4> QuadriPredicate<Element1, Element2, Element3, Element4> matchAll() {
+    public static <E1, E2, E3, E4> QuadriPredicate<E1, E2, E3, E4> matchAll() {
         return (a, b, c, d) -> true;
     }
 }

@@ -9,34 +9,34 @@ import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class BiStreamImpl<Element1, Element2> implements BiStream<Element1, Element2> {
-    private final Stream<Pair<Element1, Element2>> source;
+public class BiStreamImpl<E1, E2> implements BiStream<E1, E2> {
+    private final Stream<Pair<E1, E2>> source;
 
-    public BiStreamImpl(Stream<Pair<Element1, Element2>> source) {
+    public BiStreamImpl(Stream<Pair<E1, E2>> source) {
         this.source = source;
     }
 
-    private Stream<Pair<Element1, Element2>> tupleStream() {
+    private Stream<Pair<E1, E2>> tupleStream() {
         return StreamSupport.stream(source.spliterator(), false);
     }
 
     @Override
-    public void forEach(BiConsumer<Element1, Element2> consumer) {
+    public void forEach(BiConsumer<E1, E2> consumer) {
         source.forEach(tuple -> consumer.accept(tuple.element1(), tuple.element2()));
     }
 
     @Override
-    public <Result> Stream<Result> map(BiFunction<Element1, Element2, Result> mapper) {
+    public <Result> Stream<Result> map(BiFunction<E1, E2, Result> mapper) {
         return tupleStream().map((t) -> mapper.apply(t.element1(), t.element2()));
     }
 
     @Override
-    public BiStream<Element1, Element2> filter(BiPredicate<Element1, Element2> condition) {
+    public BiStream<E1, E2> filter(BiPredicate<E1, E2> condition) {
         return new BiStreamImpl<>(source.filter(pair -> condition.test(pair.element1(), pair.element2())));
     }
 
     @Override
-    public BiStream<Element1, Element2> peek(BiConsumer<Element1, Element2> consumer) {
+    public BiStream<E1, E2> peek(BiConsumer<E1, E2> consumer) {
         return new BiStreamImpl<>(source.peek(pair -> consumer.accept(pair.element1(), pair.element2())));
     }
 }

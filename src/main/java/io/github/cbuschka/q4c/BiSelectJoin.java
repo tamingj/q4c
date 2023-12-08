@@ -3,7 +3,7 @@ package io.github.cbuschka.q4c;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public interface BiSelectJoin<Element1, Element2, Element3> {
-    <Key> FilterableTriSelect<Element1, Element2, Element3> on(BiFunction<Element1, Element2, Key> element1KeyFunc, Function<Element3, Key> element2KeyFunc);
-    <Key> FilterableTriSelect<Element1, Element2, Element3> on(BiFunction<Element1, Element2, Key> element1KeyFunc, Function<Element3, Key> element2KeyFunc, TriPredicate<Element1, Element2, Element3> condition);
+public interface BiSelectJoin<E1, E2, E3> {
+    <Key> FilterableTriSelect<E1, E2, E3> on(BiFunction<E1, E2, Key> element1KeyFunc, Function<E3, Key> element2KeyFunc);
+    <Key> FilterableTriSelect<E1, E2, E3> on(BiFunction<E1, E2, Key> element1KeyFunc, Function<E3, Key> element2KeyFunc, TriPredicate<E1, E2, E3> condition);
 }

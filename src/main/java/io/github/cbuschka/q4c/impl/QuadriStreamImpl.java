@@ -5,35 +5,35 @@ import io.github.cbuschka.q4c.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-class QuadriStreamImpl<Element1, Element2, Element3, Element4> implements QuadriStream<Element1, Element2, Element3, Element4> {
-    private final Stream<Quadruple<Element1, Element2, Element3, Element4>> source;
+class QuadriStreamImpl<E1, E2, E3, E4> implements QuadriStream<E1, E2, E3, E4> {
+    private final Stream<Quadruple<E1, E2, E3, E4>> source;
 
-    public QuadriStreamImpl(Stream<Quadruple<Element1, Element2, Element3, Element4>> source) {
+    public QuadriStreamImpl(Stream<Quadruple<E1, E2, E3, E4>> source) {
         this.source = source;
     }
 
-    public Stream<Quadruple<Element1, Element2, Element3, Element4>> quadrupleStream() {
+    public Stream<Quadruple<E1, E2, E3, E4>> quadrupleStream() {
         return StreamSupport.stream(source.spliterator(), false);
     }
 
     @Override
-    public void forEach(QuadriConsumer<Element1, Element2, Element3, Element4> consumer) {
+    public void forEach(QuadriConsumer<E1, E2, E3, E4> consumer) {
         quadrupleStream()
                 .forEach((t) -> consumer.accept(t.element1(), t.element2(), t.element3(), t.element4()));
     }
 
     @Override
-    public <Result> Stream<Result> map(QuadriFunction<Element1, Element2, Element3, Element4, Result> mapper) {
+    public <Result> Stream<Result> map(QuadriFunction<E1, E2, E3, E4, Result> mapper) {
         return quadrupleStream().map((t) -> mapper.apply(t.element1(), t.element2(), t.element3(), t.element4()));
     }
 
     @Override
-    public QuadriStream<Element1, Element2, Element3, Element4> filter(QuadriPredicate<Element1, Element2, Element3, Element4> condition) {
+    public QuadriStream<E1, E2, E3, E4> filter(QuadriPredicate<E1, E2, E3, E4> condition) {
         return new QuadriStreamImpl<>(source.filter(pair -> condition.test(pair.element1(), pair.element2(), pair.element3(), pair.element4())));
     }
 
     @Override
-    public QuadriStream<Element1, Element2, Element3, Element4> peek(QuadriConsumer<Element1, Element2, Element3, Element4> consumer) {
+    public QuadriStream<E1, E2, E3, E4> peek(QuadriConsumer<E1, E2, E3, E4> consumer) {
         return new QuadriStreamImpl<>(source.peek(pair -> consumer.accept(pair.element1(), pair.element2(), pair.element3(), pair.element4())));
     }
 }
