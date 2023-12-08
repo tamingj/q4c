@@ -6,7 +6,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface TriSelect<Element1, Element2, Element3> extends Iterable<Triple<Element1, Element2, Element3>> {
-    TriSelect<Element1, Element2, Element3> where(TriFunction<Element1, Element2, Element3, Boolean> condition);
+
+    <Element4> TriSelectJoin<Element1, Element2, Element3, Element4> join(Iterable<Element4> element4s);
+    <Element4> TriSelectJoin<Element1, Element2, Element3, Element4> leftOuterJoin(Iterable<Element4> element4s);
+    <Element4> TriSelectJoin<Element1, Element2, Element3, Element4> rightOuterJoin(Iterable<Element4> element4s);
+    <Element4> TriSelectJoin<Element1, Element2, Element3, Element4> fullOuterJoin(Iterable<Element4> element4s);
 
     TriStream<Element1, Element2, Element3> stream();
 

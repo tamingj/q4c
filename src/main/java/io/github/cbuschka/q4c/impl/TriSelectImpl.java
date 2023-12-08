@@ -17,8 +17,29 @@ public class TriSelectImpl<Element1, Element2, Element3> implements FilterableTr
     }
 
     @Override
-    public TriSelect<Element1, Element2, Element3> where(TriFunction<Element1, Element2, Element3, Boolean> condition) {
-        return new TriSelectImpl<>(FilteredIterator.filtered(source, (t) -> condition.apply(t.element1(), t.element2(), t.element3())));
+    public <Element4> TriSelectJoin<Element1, Element2, Element3, Element4> join(Iterable<Element4> element4s) {
+        return new TriSelectJoinImpl<>(JoinMode.INNER, source, element4s);
+    }
+
+    @Override
+    public <Element4> TriSelectJoin<Element1, Element2, Element3, Element4> leftOuterJoin(Iterable<Element4> element4s) {
+        return new TriSelectJoinImpl<>(JoinMode.LEFT_OUTER, source, element4s);
+    }
+
+    @Override
+    public <Element4> TriSelectJoin<Element1, Element2, Element3, Element4> rightOuterJoin(Iterable<Element4> element4s) {
+        return new TriSelectJoinImpl<>(JoinMode.RIGHT_OUTER, source, element4s);
+    }
+
+    @Override
+    public <Element4> TriSelectJoin<Element1, Element2, Element3, Element4> fullOuterJoin(Iterable<Element4> element4s) {
+        return new TriSelectJoinImpl<>(JoinMode.FULL_OUTER, source, element4s);
+    }
+
+
+    @Override
+    public TriSelect<Element1, Element2, Element3> where(TriPredicate<Element1, Element2, Element3> condition) {
+        return new TriSelectImpl<>(FilteredIterator.filtered(source, (t) -> condition.test(t.element1(), t.element2(), t.element3())));
     }
 
     @Override
