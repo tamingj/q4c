@@ -5,7 +5,10 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public interface QuadriSelect<E1, E2, E3, E4> extends Iterable<Quadruple<E1, E2, E3, E4>> {
-    QuadriSelect<E1, E2, E3, E4> where(QuadriPredicate<E1, E2, E3, E4> condition);
+    <E5> QuadriSelectJoin<E1, E2, E3, E4, E5> join(Iterable<E5> right);
+    <E5> QuadriSelectJoin<E1, E2, E3, E4, E5> leftOuterJoin(Iterable<E5> right);
+    <E5> QuadriSelectJoin<E1, E2, E3, E4, E5> rightOuterJoin(Iterable<E5> right);
+    <E5> QuadriSelectJoin<E1, E2, E3, E4, E5> fullOuterJoin(Iterable<E5> right);
 
     QuadriStream<E1, E2, E3, E4> stream();
 
