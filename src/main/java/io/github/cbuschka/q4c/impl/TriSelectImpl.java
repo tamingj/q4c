@@ -3,6 +3,9 @@ package io.github.cbuschka.q4c.impl;
 import io.github.cbuschka.q4c.*;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -31,5 +34,20 @@ public class TriSelectImpl<Element1, Element2, Element3> implements FilterableTr
     @Override
     public Iterator<Triple<Element1, Element2, Element3>> iterator() {
         return source.iterator();
+    }
+
+    @Override
+    public List<Triple<Element1, Element2, Element3>> toList() {
+        return tripleStream().collect(Collectors.toList());
+    }
+
+    @Override
+    public void forEach(TriConsumer<Element1, Element2, Element3> consumer) {
+        stream().forEach(consumer);
+    }
+
+    @Override
+    public void forEach(Consumer<? super Triple<Element1, Element2, Element3>> consumer) {
+        tripleStream().forEach(consumer);
     }
 }

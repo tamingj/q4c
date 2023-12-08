@@ -3,6 +3,10 @@ package io.github.cbuschka.q4c.impl;
 import io.github.cbuschka.q4c.*;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -51,5 +55,20 @@ public class BiSelectImpl<Element1, Element2> implements FilterableBiSelect<Elem
     @Override
     public Iterator<Pair<Element1, Element2>> iterator() {
         return source.iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Pair<Element1, Element2>> consumer) {
+        forEach((e1, e2) -> consumer.accept(Pair.of(e1, e2)));
+    }
+
+    @Override
+    public void forEach(BiConsumer<Element1, Element2> consumer) {
+        stream().forEach(consumer);
+    }
+
+    @Override
+    public List<Pair<Element1, Element2>> toList() {
+        return pairStream().collect(Collectors.toList());
     }
 }

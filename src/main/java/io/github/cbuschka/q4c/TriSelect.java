@@ -12,16 +12,10 @@ public interface TriSelect<Element1, Element2, Element3> extends Iterable<Triple
 
     Stream<Triple<Element1, Element2, Element3>> tripleStream();
 
-    default List<Triple<Element1, Element2, Element3>> toList() {
-        return tripleStream().collect(Collectors.toList());
-    }
+    List<Triple<Element1, Element2, Element3>> toList();
 
-    default void forEach(TriConsumer<Element1, Element2, Element3> consumer) {
-        stream().forEach(consumer);
-    }
+    void forEach(TriConsumer<Element1, Element2, Element3> consumer);
 
-    default void forEach(Consumer<? super Triple<Element1, Element2, Element3>> consumer) {
-        tripleStream().forEach(consumer);
-    }
+    void forEach(Consumer<? super Triple<Element1, Element2, Element3>> consumer);
 }
 

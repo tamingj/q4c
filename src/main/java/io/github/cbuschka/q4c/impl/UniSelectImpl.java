@@ -5,7 +5,10 @@ import io.github.cbuschka.q4c.UniSelect;
 import io.github.cbuschka.q4c.UniSelectJoin;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -49,5 +52,15 @@ public class UniSelectImpl<Element1> implements FilterableUniSelect<Element1> {
     @Override
     public Iterator<Element1> iterator() {
         return elements.iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Element1> consumer) {
+        stream().forEach(consumer);
+    }
+
+    @Override
+    public List<Element1> toList() {
+        return stream().collect(Collectors.toList());
     }
 }

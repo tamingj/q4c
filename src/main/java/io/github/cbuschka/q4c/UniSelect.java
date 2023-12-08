@@ -16,12 +16,8 @@ public interface UniSelect<Element1> extends Iterable<Element1> {
 
     Stream<Element1> stream();
 
-    default void forEach(Consumer<? super Element1> consumer) {
-        stream().forEach(consumer);
-    }
+    void forEach(Consumer<? super Element1> consumer);
 
-    default List<Element1> toList() {
-        return stream().collect(Collectors.toList());
-    }
+    List<Element1> toList();
 }
 
