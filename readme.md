@@ -1,7 +1,9 @@
 # q4c - queries for collections
 
-## License
-Copyright (c) 2023 by the cbuschka/q4c maintainers.
+[![Contributors](https://contrib.rocks/image?repo=tamingj/q4c)](https://github.com/tamingj/q4c/graphs/contributors)
 
-[MIT License](./license.txt)
+## License
+Copyright (c) 2024 by the tamingj/q4c maintainers.
+
+[Apache License, Version 2.0](./license.txt)
 
