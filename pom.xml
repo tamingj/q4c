@@ -3,17 +3,50 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.github.cbuschka.q4c</groupId>
-    <artifactId>objset</artifactId>
+    <groupId>io.github.tamingj.q4c</groupId>
+    <artifactId>q4c</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>objset</name>
-    <url>https://github.com/cbuschka/q4c</url>
+    <name>q4c</name>
+    <description>queries for collections</description>
+    <url>https://github.com/tamingj/q4c</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
         <lombok.version>1.18.30</lombok.version>
     </properties>
+    <scm>
+        <developerConnection>scm:git:ssh://git@github.com/tamingj/q4c</developerConnection>
+        <connection>scm:git:ssh://git@github.com/tamingj/q4c</connection>
+        <tag>HEAD</tag>
+        <url>https://github.com/tamingj/q4c.git</url>
+    </scm>
+    <developers>
+        <developer>
+            <id>cbuschka</id>
+            <email>cbuschka@gmail.com</email>
+            <name>Cornelius Buschka</name>
+            <url>https://github.com/cbuschka</url>
+        </developer>
+        <developer>
+            <id>leonstoldt</id>
+            <email>tech@leon-stoldt.de</email>
+            <name>Leon Stoldt</name>
+            <url>https://github.com/LeonStoldt</url>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/tamingj/q4c/issues</url>
+    </issueManagement>
     <build>
         <plugins>
             <plugin>
@@ -38,13 +71,13 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version>
+            <version>3.25.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
+            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
