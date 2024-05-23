@@ -3,7 +3,7 @@
 ## Installation
 ```xml
 <dependency>
-    <groupId>io.github.tamingj</groupId>
+    <groupId>io.github.tamingj.q4c</groupId>
     <artifactId>q4c</artifactId>
     <version>${tamingj.q4c.version}</version>
 </dependency>
