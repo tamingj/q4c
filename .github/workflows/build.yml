@@ -22,4 +22,4 @@ jobs:
           distribution: 'temurin'
 
       - name: build with maven
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots clean verify -DskipGpgSign=true
