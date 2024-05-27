@@ -151,7 +151,7 @@
                             <publishingServerId>central</publishingServerId>
                             <tokenAuth>true</tokenAuth>
                             <deploymentName>q4c-deployment</deploymentName>
-                            <!--<autoPublish>true</autoPublish>-->
+                            <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>
                     <plugin>
