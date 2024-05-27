@@ -1,7 +1,7 @@
 # q4c - queries for collections
 
 ## Installation
-[![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)](https://central.sonatype.com/artifact/tamingj/q4c)
+[![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)](https://central.sonatype.com/artifact/io.github.tamingj.q4c/q4c)
 ```xml
 <dependency>
     <groupId>io.github.tamingj.q4c</groupId>
